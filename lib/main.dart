@@ -30,8 +30,6 @@ class _MyAppState extends State<MyApp> {
 
     final response = await expenseService.getAllExpense();
 
-    // print(response);
-
     setState(() {
       listofExpenses = response;
       loading = false;
