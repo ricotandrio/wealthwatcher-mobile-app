@@ -7,7 +7,7 @@ import 'package:wealthwatcher/models/outputs/register_output.dart';
 class UserService {
   Future<RegisterUserOutput> registerUser(
       String username, String password) async {
-    await dotenv.load(fileName: ".env");
+    
     final apiUrl = dotenv.env['API_REGISTER'];
 
     final response = await http.post(

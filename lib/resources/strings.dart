@@ -3,9 +3,15 @@ class Strings {
 
   static const String login = 'Login';
   static const String loginBanner = 'Login to your account';
+  static const String loginSuccess = 'Logged in successfully';
+  static const String loginFailed = 'Failed to login user';
 
   static const String register = 'Register';
   static const String registerBanner = 'Register for an account';
+  static const String registerSuccess = 'Registered successfully';
+  static const String registerFailed = 'Failed to register user';
+
+  static const String loading = 'Loading...';
 
   static const String email = 'Email';
   static const String emailEmpty = 'Email cannot be empty';
