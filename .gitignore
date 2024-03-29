@@ -225,9 +225,21 @@ google-services.json
 # Android Profiling
 *.hprof
 
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
 # temporary ignore
 __test__
 firebase_options.dart
 GoogleService-Info.plist
 firebase_app_id_file.json
-
