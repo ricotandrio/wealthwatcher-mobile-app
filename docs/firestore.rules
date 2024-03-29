@@ -1,0 +1,16 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow only authenticated users to read and write their own user data
+    match /users/{userId} {
+      allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Allow only authenticated users to read and write their own expenses and incomes
+    match /users/{userId}/expenses/{document=**} {
+      allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+    }
+    match /users/{userId}/incomes/{document=**} {
+      allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

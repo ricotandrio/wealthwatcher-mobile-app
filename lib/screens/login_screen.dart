@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
-import 'package:wealthwatcher/controller/firebase/auth_repository.dart';
+import 'package:wealthwatcher/controller/firebase/user_repository.dart';
 import 'package:wealthwatcher/controller/services/user_service.dart';
 import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/home_screen.dart';

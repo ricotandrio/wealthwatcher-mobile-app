@@ -1,8 +1,8 @@
 import 'package:wealthwatcher/models/database/management.dart';
 import 'dart:convert';
 
-class Expenses extends Management {
-  Expenses({
+class Incomes extends Management {
+  Incomes({
     required String id,
     required String category,
     required String name,
@@ -20,20 +20,32 @@ class Expenses extends Management {
           paidMethod: paidMethod,
         );
 
-  String toJson() => json.encode(toMap());
-
-  factory Expenses.fromJson(String str) =>
-      Expenses.fromMap(json.decode(str) as Map<String, dynamic>);
-
-  factory Expenses.fromMap(Map<String, dynamic> data) {
-    return Expenses(
+  factory Incomes.toJson(Map<String, dynamic> data) {
+    return Incomes(
       id: data['id'] ?? '',
       category: data['category'] ?? '',
       name: data['name'] ?? '',
-      amount: (data['amount'] ?? 0).toDouble(), 
+      amount: (data['amount'] ?? 0).toDouble(),
       date: data['date'] ?? '',
       description: data['description'] ?? '',
       paidMethod: data['paidMethod'] ?? '',
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Incomes.fromJson(String str) =>
+    Incomes.fromMap(json.decode(str) as Map<String, dynamic>);
+
+  factory Incomes.fromMap(Map<String, dynamic> data) {
+    return Incomes(
+      id: data['id'],
+      category: data['category'],
+      name: data['name'],
+      amount: data['amount'],
+      date: data['date'],
+      description: data['description'],
+      paidMethod: data['paidMethod'],
     );
   }
 
@@ -51,6 +63,6 @@ class Expenses extends Management {
 
   @override
   String toString() {
-    return 'Expenses{id: $id, category: $category, name: $name, amount: $amount, date: $date, description: $description, paidMethod: $paidMethod}';
+    return 'Incomes{id: $id, category: $category, name: $name, amount: $amount, date: $date, description: $description, paidMethod: $paidMethod}';
   }
 }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+// Register Event
 abstract class RegisterEvent extends Equatable {
   @override
   List<Object> get props => [];
@@ -15,6 +16,7 @@ class RegisterRequested extends RegisterEvent {
   List<Object> get props => [email, password];
 }
 
+// Login Event
 abstract class LoginEvent extends Equatable {
   @override
   List<Object> get props => [];

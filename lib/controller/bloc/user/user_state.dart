@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+// Register State
 abstract class RegisterState extends Equatable {}
 
 class LoadingRegister extends RegisterState {
@@ -17,6 +18,7 @@ class AuthenticatedRegister extends RegisterState {
   List<Object> get props => [];
 }
 
+// Login State
 abstract class LoginState extends Equatable {}
 
 class LoadingLogin extends LoginState {
