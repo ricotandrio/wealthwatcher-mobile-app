@@ -90,7 +90,7 @@ class LoginRepository {
       final List<Expenses> expensesListFormat = expensesDocFormat.isNotEmpty
           ? expensesDocFormat.map((e) => Expenses.fromMap(e)).toList()
           : [];
-
+  
       // incomes collection
       final incomesDoc = await _firestore
           .collection('users')

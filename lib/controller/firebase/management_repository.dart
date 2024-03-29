@@ -20,7 +20,7 @@ class ExpensesRepository {
         throw FirebaseAuthException(code: '500', message: 'User not logged in');
       }
 
-      DocumentReference doc = await _firestore
+      await _firestore
           .collection('users')
           .doc(_firebaseAuth.currentUser!.uid)
           .collection('expenses')
@@ -34,7 +34,6 @@ class ExpensesRepository {
       });
 
       return Expenses(
-        id: doc.id,
         category: category,
         name: name,
         amount: amount,
@@ -69,7 +68,7 @@ class IncomesRepository {
         throw FirebaseAuthException(code: '500', message: 'User not logged in');
       }
 
-      DocumentReference doc = await _firestore
+      await _firestore
           .collection('users')
           .doc(_firebaseAuth.currentUser!.uid)
           .collection('incomes')
@@ -83,7 +82,6 @@ class IncomesRepository {
       });
 
       return Incomes(
-        id: doc.id,
         category: category,
         name: name,
         amount: amount,
