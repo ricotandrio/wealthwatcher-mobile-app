@@ -11,6 +11,25 @@ class RegisterRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Users getCurrentUser() {
+    final user = _firebaseAuth.currentUser;
+
+    if (user == null) {
+      throw FirebaseAuthException(
+        code: '404',
+        message: 'User not found',
+      );
+    }
+
+    return Users(
+      firebaseid: user.uid,
+      email: user.email!,
+      username: user.email!.split('@').first,
+      expenses: [],
+      incomes: [],
+    );
+  }
+
   Future<Users> signUp(
       {required String email, required String password}) async {
     try {
@@ -55,6 +74,25 @@ class LoginRepository {
   final _firebaseAuth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
 
+  Users getCurrentUser() {
+    final user = _firebaseAuth.currentUser;
+
+    if (user == null) {
+      throw FirebaseAuthException(
+        code: '404',
+        message: 'User not found',
+      );
+    }
+
+    return Users(
+      firebaseid: user.uid,
+      email: user.email!,
+      username: user.email!.split('@').first,
+      expenses: [],
+      incomes: [],
+    );
+  }
+  
   Future<dynamic> signIn(
       {required String email, required String password}) async {
     try {
@@ -77,40 +115,12 @@ class LoginRepository {
 
       final userData = userDoc.data() as Map<String, dynamic>;
 
-      // expenses collection
-      final expensesDoc = await _firestore
-          .collection('users')
-          .doc(id)
-          .collection('expenses')
-          .get();
-
-      final List<dynamic> expensesDocFormat = expensesDoc.docs.isNotEmpty
-          ? expensesDoc.docs.map((e) => e.data()).toList()
-          : [];
-      final List<Expenses> expensesListFormat = expensesDocFormat.isNotEmpty
-          ? expensesDocFormat.map((e) => Expenses.fromMap(e)).toList()
-          : [];
-  
-      // incomes collection
-      final incomesDoc = await _firestore
-          .collection('users')
-          .doc(id)
-          .collection('incomes')
-          .get();
-
-      final List<dynamic> incomesDocFormat = incomesDoc.docs.isNotEmpty
-          ? incomesDoc.docs.map((e) => e.data()).toList()
-          : [];
-      final List<Incomes> incomesListFormat = incomesDocFormat.isNotEmpty
-          ? incomesDocFormat.map((e) => Incomes.fromMap(e)).toList()
-          : [];
-
       return Users(
         firebaseid: id,
         email: userData['email'],
         username: userData['username'],
-        expenses: expensesListFormat,
-        incomes: incomesListFormat,
+        expenses: [],
+        incomes: [],
       );
 
     } on FirebaseAuthException catch (e) {

@@ -1,4 +1,5 @@
 abstract class Management {
+  String id;
   String category;
   String name;
   double amount;
@@ -7,6 +8,7 @@ abstract class Management {
   String paidMethod;
 
   Management({
+    required this.id,
     required this.category,
     required this.name,
     required this.amount,

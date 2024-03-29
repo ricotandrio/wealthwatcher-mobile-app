@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-// Add Expenses event
-abstract class AddExpensesEvent extends Equatable {}
+// Add Income event
+abstract class AddIncomeEvent extends Equatable {}
 
-class AddExpenses extends AddExpensesEvent {
+class AddIncome extends AddIncomeEvent {
   final String id;
   final String category;
   final String name;
@@ -12,7 +12,7 @@ class AddExpenses extends AddExpensesEvent {
   final String? description;
   final String paidMethod;
 
-  AddExpenses({
+  AddIncome({
     required this.id,
     required this.category,
     required this.name,
@@ -26,10 +26,30 @@ class AddExpenses extends AddExpensesEvent {
   List<Object> get props => [];
 }
 
-// Add Incomes event
-abstract class AddIncomesEvent extends Equatable {}
+// Get all incomes event
+abstract class GetAllIncomesEvent extends Equatable {}
 
-class AddIncomes extends AddIncomesEvent {
+class GetAllIncomes extends GetAllIncomesEvent {
+  @override
+  List<Object> get props => [];
+}
+
+// Delete income event
+abstract class DeleteIncomeEvent extends Equatable {}
+
+class DeleteIncome extends DeleteIncomeEvent {
+  final String id;
+
+  DeleteIncome({required this.id});
+
+  @override
+  List<Object> get props => [];
+}
+
+// Update income event
+abstract class UpdateIncomeEvent extends Equatable {}
+
+class UpdateIncome extends UpdateIncomeEvent {
   final String id;
   final String category;
   final String name;
@@ -38,7 +58,7 @@ class AddIncomes extends AddIncomesEvent {
   final String? description;
   final String paidMethod;
 
-  AddIncomes({
+  UpdateIncome({
     required this.id,
     required this.category,
     required this.name,

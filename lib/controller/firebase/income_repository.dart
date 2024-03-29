@@ -1,14 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:wealthwatcher/models/database/expenses.dart';
+import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wealthwatcher/models/database/incomes.dart';
+import 'package:wealthwatcher/models/outputs/base_output.dart';
 
-// Expenses service repository
-class ExpensesRepository {
+// Incomes service repository
+class IncomeRepository {
   final _firebaseAuth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
 
-  Future<Expenses> addExpenses(
+  Future<Incomes> addIncome(
       {required String category,
       required String name,
       required double amount,
@@ -20,11 +21,15 @@ class ExpensesRepository {
         throw FirebaseAuthException(code: '500', message: 'User not logged in');
       }
 
+      String id = Uuid().v4();
+
       await _firestore
           .collection('users')
           .doc(_firebaseAuth.currentUser!.uid)
-          .collection('expenses')
-          .add({
+          .collection('incomes')
+          .doc(id)
+          .set({
+        'id': id,
         'category': category,
         'name': name,
         'amount': amount,
@@ -33,7 +38,8 @@ class ExpensesRepository {
         'paidMethod': paidMethod,
       });
 
-      return Expenses(
+      return Incomes(
+        id: id,
         category: category,
         name: name,
         amount: amount,
@@ -46,18 +52,63 @@ class ExpensesRepository {
     } on FirebaseException catch (e) {
       throw Exception('FirebaseException: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to add expenses: ${e.toString()}');
+      throw Exception('Failed to add incomes: ${e.toString()}');
     }
   }
-}
 
-// Incomes service repository
-class IncomesRepository {
-  final _firebaseAuth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
+  Future<List<Incomes>> getAllIncomes() async {
+    try {
+      if (_firebaseAuth.currentUser == null) {
+        throw FirebaseAuthException(code: '500', message: 'User not logged in');
+      }
 
-  Future<Incomes> addIncomes(
-      {required String category,
+      final response = await _firestore
+          .collection('users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .collection('incomes')
+          .get();
+
+      final List<Incomes> incomes = response.docs.isNotEmpty
+          ? response.docs.map((e) => Incomes.fromMap(e.data())).toList()
+          : [];
+
+      return incomes;
+    } on FirebaseAuthException catch (e) {
+      throw Exception('FirebaseAuthException: ${e.message}');
+    } on FirebaseException catch (e) {
+      throw Exception('FirebaseException: ${e.message}');
+    } catch (e) {
+      throw Exception('Failed to get incomes: ${e.toString()}');
+    }
+  }
+
+  Future<BaseOutput> deleteIncome({required String id}) async {
+    try {
+      if (_firebaseAuth.currentUser == null) {
+        throw FirebaseAuthException(code: '500', message: 'User not logged in');
+      }
+
+      await _firestore
+          .collection('users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .collection('incomes')
+          .doc(id)
+          .delete();
+
+      return BaseOutput(code: 200, message: "Income deleted successfully");
+
+    } on FirebaseAuthException catch (e) {
+      throw Exception('FirebaseAuthException: ${e.message}');
+    } on FirebaseException catch (e) {
+      throw Exception('FirebaseException: ${e.message}');
+    } catch (e) {
+      throw Exception('Failed to delete incomes: ${e.toString()}');
+    }
+  }
+
+  Future<Incomes> updateIncome(
+      {required String id,
+      required String category,
       required String name,
       required double amount,
       required String date,
@@ -72,7 +123,8 @@ class IncomesRepository {
           .collection('users')
           .doc(_firebaseAuth.currentUser!.uid)
           .collection('incomes')
-          .add({
+          .doc(id)
+          .update({
         'category': category,
         'name': name,
         'amount': amount,
@@ -82,6 +134,7 @@ class IncomesRepository {
       });
 
       return Incomes(
+        id: id,
         category: category,
         name: name,
         amount: amount,
@@ -94,7 +147,7 @@ class IncomesRepository {
     } on FirebaseException catch (e) {
       throw Exception('FirebaseException: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to add incomes: ${e.toString()}');
+      throw Exception('Failed to update incomes: ${e.toString()}');
     }
   }
 }

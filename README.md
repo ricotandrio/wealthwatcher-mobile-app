@@ -11,7 +11,7 @@ To run the WealthWatcher app:
 3. Navigate to the project directory in your terminal.
 4. Run the command `flutter run` to launch the app on your emulator or connected device.
 
-## Docs 
+## Documentation
 Documentation for this project available in `./docs`
 
 ## About Flutter

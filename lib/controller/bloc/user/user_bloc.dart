@@ -7,15 +7,15 @@ import 'package:wealthwatcher/controller/firebase/user_repository.dart';
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final RegisterRepository registerRepository;
 
-  RegisterBloc({required this.registerRepository}) : super(UnauthenticatedRegister()){
+  RegisterBloc({required this.registerRepository}) : super(UnauthenticatedRegister(message: '')){
     on<RegisterRequested>((event, emit) async {
       emit(LoadingRegister());
       try {
         await registerRepository.signUp(email: event.email, password: event.password);
         
-        emit(AuthenticatedRegister());
+        emit(AuthenticatedRegister(user: registerRepository.getCurrentUser()));
       } catch (e) {
-        emit(UnauthenticatedRegister());
+        emit(UnauthenticatedRegister(message: e.toString()));
       }
     });
   }
@@ -25,14 +25,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepository loginRepository;
 
-  LoginBloc({required this.loginRepository}) : super(UnauthenticatedLogin()){
+  LoginBloc({required this.loginRepository}) : super(UnauthenticatedLogin(message: '')){
     on<LoginRequested>((event, emit) async {
       emit(LoadingLogin());
       try {
         await loginRepository.signIn(email: event.email, password: event.password);
-        emit(AuthenticatedLogin());
+        emit(AuthenticatedLogin(user: loginRepository.getCurrentUser()));
       } catch (e) {
-        emit(UnauthenticatedLogin());
+        emit(UnauthenticatedLogin(message: e.toString()));
       }
     });
   }

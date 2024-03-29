@@ -3,6 +3,7 @@ import 'dart:convert';
 
 class Expenses extends Management {
   Expenses({
+    required String id,
     required String category,
     required String name,
     required double amount,
@@ -10,6 +11,7 @@ class Expenses extends Management {
     String? description,
     required String paidMethod,
   }) : super(
+          id: id,
           category: category,
           name: name,
           amount: amount,
@@ -25,6 +27,7 @@ class Expenses extends Management {
 
   factory Expenses.fromMap(Map<String, dynamic> data) {
     return Expenses(
+      id: data['id'] ?? '',
       category: data['category'] ?? '',
       name: data['name'] ?? '',
       amount: (data['amount'] ?? 0).toDouble(), 
@@ -36,6 +39,7 @@ class Expenses extends Management {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'category': category,
       'name': name,
       'amount': amount,
@@ -47,6 +51,6 @@ class Expenses extends Management {
 
   @override
   String toString() {
-    return 'Expenses{category: $category, name: $name, amount: $amount, date: $date, description: $description, paidMethod: $paidMethod}';
+    return 'Expenses{id: $id, category: $category, name: $name, amount: $amount, date: $date, description: $description, paidMethod: $paidMethod}';
   }
 }
