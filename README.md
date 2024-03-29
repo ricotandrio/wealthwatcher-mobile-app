@@ -1,16 +1,24 @@
 # wealthwatcher
 
-A new Flutter project.
+This is a mobile app for managing expenses and incomes, built using Flutter. `Firebase` is used for authentication, `Firestore` for the database, and `BLoC` for state management.
 
-## Getting Started
+## How to Run
 
-This project is a starting point for a Flutter application.
+To run the WealthWatcher app:
 
-A few resources to get you started if this is your first Flutter project:
+1. Clone this repository to your local machine.
+2. Ensure you have Flutter installed. If not, follow the installation instructions in the [Flutter documentation](https://flutter.dev/docs/get-started/install).
+3. Navigate to the project directory in your terminal.
+4. Run the command `flutter run` to launch the app on your emulator or connected device.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Docs 
+Documentation for this project available in `./docs`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## About Flutter
+
+If this is your first time working with Flutter, here are some resources to help you get started:
+
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For more help with Flutter development, refer to the [online documentation](https://flutter.dev/docs/), which includes tutorials, samples, and a full API reference.
