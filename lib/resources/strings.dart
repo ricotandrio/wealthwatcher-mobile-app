@@ -39,4 +39,17 @@ class Strings {
   static const String menu2 = 'Analytics';
   static const String menu3 = 'Balance';
   static const String menu4 = 'Settings';
+
+  static const String expense = 'Recent Expenses';
+  static const String income = 'Recent Income';
+
+  static const String expenseTotal = 'Total Expenses';
+  static const String incomeTotal = 'Total Income';
+  static const String balanceTotal = 'Total Balance';
+
+  static const String logout = 'Logout';
+  static const String logoutSuccess = 'Logged out successfully';
+  static const String logoutFailed = 'Failed to logout user';
+
+  static const String app = 'Wealth Watcher';
 }

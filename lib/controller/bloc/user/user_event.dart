@@ -31,3 +31,19 @@ class LoginRequested extends LoginEvent {
   @override
   List<Object> get props => [email, password];
 }
+
+// Logout Event
+abstract class LogoutEvent extends Equatable {
+  @override
+  List<Object> get props => [];
+}
+
+class LogoutRequested extends LogoutEvent {}
+
+// Total balance event 
+abstract class TotalBalanceEvent extends Equatable {
+  @override
+  List<Object> get props => [];
+}
+
+class GetTotalBalance extends TotalBalanceEvent {}

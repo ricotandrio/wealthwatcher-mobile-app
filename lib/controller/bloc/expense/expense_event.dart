@@ -71,3 +71,11 @@ class UpdateExpense extends UpdateExpenseEvent {
   @override
   List<Object> get props => [];
 }
+
+// Get total expenses event
+abstract class GetTotalExpensesEvent extends Equatable {}
+
+class GetTotalExpenses extends GetTotalExpensesEvent {
+  @override
+  List<Object> get props => [];
+}

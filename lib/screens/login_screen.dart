@@ -24,6 +24,7 @@ class LoginScreen extends StatelessWidget {
       child: BlocProvider(
         create: (context) => LoginBloc(
           loginRepository: RepositoryProvider.of<LoginRepository>(context),
+          userRepository: UserRepository(),
         ),
         child: Scaffold(
           body: Padding(
@@ -96,7 +97,7 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(height: 80.0),
                   BlocConsumer<LoginBloc, LoginState>(
                     listener: (context, state) {
-                      if (state is LoadingLogin){
+                      if (state is LoadingLogin) {
                         showDialog(
                           context: context,
                           barrierDismissible: false,
@@ -107,13 +108,10 @@ class LoginScreen extends StatelessWidget {
                           },
                         );
                       } else if (state is AuthenticatedLogin) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SplashScreen(),
-                          ),
-                        );
+                        Navigator.pop(context);
+                        
                       } else if (state is UnauthenticatedLogin) {
+                        Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(Strings.loginFailed),

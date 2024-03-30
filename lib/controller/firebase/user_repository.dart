@@ -11,25 +11,6 @@ class RegisterRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Users getCurrentUser() {
-    final user = _firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw FirebaseAuthException(
-        code: '404',
-        message: 'User not found',
-      );
-    }
-
-    return Users(
-      firebaseid: user.uid,
-      email: user.email!,
-      username: user.email!.split('@').first,
-      expenses: [],
-      incomes: [],
-    );
-  }
-
   Future<Users> signUp(
       {required String email, required String password}) async {
     try {
@@ -73,25 +54,6 @@ class RegisterRepository {
 class LoginRepository {
   final _firebaseAuth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-
-  Users getCurrentUser() {
-    final user = _firebaseAuth.currentUser;
-
-    if (user == null) {
-      throw FirebaseAuthException(
-        code: '404',
-        message: 'User not found',
-      );
-    }
-
-    return Users(
-      firebaseid: user.uid,
-      email: user.email!,
-      username: user.email!.split('@').first,
-      expenses: [],
-      incomes: [],
-    );
-  }
   
   Future<dynamic> signIn(
       {required String email, required String password}) async {
@@ -129,6 +91,39 @@ class LoginRepository {
       throw Exception('Failed to retrieve user data: ${e.message}');
     } catch (e) {
       throw Exception('Failed to sign in: ${e.toString()}');
+    }
+  }
+}
+
+class UserRepository {
+  final _firebaseAuth = FirebaseAuth.instance;
+
+  Users getCurrentUser() {
+    final user = _firebaseAuth.currentUser;
+
+    if (user == null) {
+      throw FirebaseAuthException(
+        code: '404',
+        message: 'User not found',
+      );
+    }
+
+    return Users(
+      firebaseid: user.uid,
+      email: user.email!,
+      username: user.email!.split('@').first,
+      expenses: [],
+      incomes: [],
+    );
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _firebaseAuth.signOut();
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Failed to sign out: ${e.message}');
+    } catch (e) {
+      throw Exception('Failed to sign out: ${e.toString()}');
     }
   }
 }

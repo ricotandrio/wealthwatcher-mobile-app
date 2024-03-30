@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/dashboard_screen.dart';
+import 'package:wealthwatcher/screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final List<dynamic> listofExpenses;
-
-  const HomeScreen({Key? key, required this.listofExpenses}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -13,7 +12,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  List<String> _menuTitles = [Strings.menu1, Strings.menu2, Strings.menu3, Strings.menu4];
+  List<String> _menuTitles = [
+    Strings.menu1,
+    Strings.menu2,
+    Strings.menu3,
+    Strings.menu4
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -30,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: _selectedIndex,
         children: <Widget>[
-          DashboardScreen(listofExpenses: widget.listofExpenses),
+          DashboardScreen(),
           Container(
             child: Center(
               child: Text('Analytics Page'),
@@ -41,11 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text('Balance Page'),
             ),
           ),
-          Container(
-            child: Center(
-              child: Text('Settings Page'),
-            ),
-          ),
+          SettingsScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

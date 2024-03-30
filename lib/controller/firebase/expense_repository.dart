@@ -179,4 +179,36 @@ class ExpenseRepository {
       throw Exception('Failed to update expenses: ${e.toString()}');
     }
   }
+
+  Future<double> getTotalExpenses() async {
+    try {
+      if (_firebaseAuth.currentUser == null) {
+        throw FirebaseAuthException(
+            code: _unauthErrorCode, message: _unauthErrorMessage);
+      }
+
+      final response = await _firestore
+          .collection('users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .collection('expenses')
+          .get();
+
+      final List<Expenses> expenses = response.docs.isNotEmpty
+          ? response.docs.map((e) => Expenses.fromMap(e.data())).toList()
+          : [];
+
+      double total = 0.0;
+      expenses.forEach((element) {
+        total += element.amount;
+      });
+
+      return total;
+    } on FirebaseAuthException catch (e) {
+      throw Exception('FirebaseAuthException: ${e.message}');
+    } on FirebaseException catch (e) {
+      throw Exception('FirebaseException: ${e.message}');
+    } catch (e) {
+      throw Exception('Failed to get total expenses: ${e.toString()}');
+    }
+  }
 }

@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
+import 'package:wealthwatcher/controller/bloc/expense/expense_event.dart';
+import 'package:wealthwatcher/controller/bloc/expense/expense_state.dart';
+import 'package:wealthwatcher/controller/bloc/income/income_bloc.dart';
+import 'package:wealthwatcher/controller/bloc/income/income_event.dart';
+import 'package:wealthwatcher/controller/bloc/income/income_state.dart';
+import 'package:wealthwatcher/controller/bloc/user/user_bloc.dart';
+import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
+import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
+import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
+import 'package:wealthwatcher/controller/firebase/income_repository.dart';
+import 'package:wealthwatcher/models/database/incomes.dart';
+import 'package:wealthwatcher/resources/strings.dart';
+import 'package:wealthwatcher/screens/add_expense_screen.dart';
+import 'package:wealthwatcher/screens/expenses_screen.dart';
+import 'package:wealthwatcher/screens/incomes_screen.dart';
 import 'package:wealthwatcher/utils/date_format.dart';
 import 'package:wealthwatcher/utils/icon_category.dart';
 
-class DashboardScreen extends StatefulWidget {
-  final List<dynamic> listofExpenses;
+bool expenses = true;
 
-  const DashboardScreen({Key? key, required this.listofExpenses})
-      : super(key: key);
+class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({Key? key}) : super(key: key);
 
-  @override
-  _DashboardScreenState createState() => _DashboardScreenState();
-}
-
-class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +31,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // add new expense
-          Navigator.pushNamed(context, '/expense');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AddExpenseScreen()),
+          );
         },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -31,120 +46,223 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         backgroundColor: Colors.blue,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(20.0),
-              margin: EdgeInsets.all(15.0),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Balance',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            'Rp. 342323,-',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Total Expenses',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            'Rp. 342323,-',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            'Total Income',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            'Rp. 342323,-',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+      body: SafeArea(
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<GetTotalExpensesBloc>(
+              create: (context) =>
+                  GetTotalExpensesBloc(expensesRepository: ExpenseRepository())
+                    ..add(GetTotalExpenses()),
             ),
-            Container(
-              padding: EdgeInsets.all(20.0),
-              margin: EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Recent Expenses',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  // create list of expenses
-                  Column(
-                    children: <Widget>[
-                      ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: widget.listofExpenses.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final expense = widget.listofExpenses[index];
-
-                            return ListTile(
-                              shape: ShapeBorder.lerp(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  0.5),
-                              leading: Icon(IconCategory.getCategoryIcon(
-                                  expense['type'])),
-                              title: Text(expense['name']),
-                              subtitle: Text(expense['amount'].toString()),
-                              trailing: Text(DateFormat.format(
-                                  DateTime.parse(expense['date']))),
-                            );
-                          })
-                    ],
-                  ),
-                ],
-              ),
+            BlocProvider<GetTotalIncomesBloc>(
+              create: (context) =>
+                  GetTotalIncomesBloc(incomeRepository: IncomeRepository())
+                    ..add(GetTotalIncomes()),
+            ),
+            BlocProvider<TotalBalanceBloc>(
+              create: (context) => TotalBalanceBloc(
+                expenseRepository: ExpenseRepository(),
+                incomeRepository: IncomeRepository(),
+              )..add(GetTotalBalance()),
             ),
           ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(20.0),
+                  margin: EdgeInsets.all(15.0),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                Strings.balanceTotal,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              BlocBuilder<TotalBalanceBloc, TotalBalanceState>(
+                                builder: (BuildContext context,
+                                    TotalBalanceState state) {
+                                  if (state is LoadingTotalBalance) {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  } else if (state
+                                      is AuthenticatedTotalBalance) {
+                                    return Text(
+                                      'Rp. ${state.totalBalance},-',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    );
+                                  } else if (state
+                                      is UnauthenticatedTotalBalance) {
+                                    return Text(
+                                      state.message,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    );
+                                  } else {
+                                    return SizedBox();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                Strings.expenseTotal,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              BlocBuilder<GetTotalExpensesBloc,
+                                  GetTotalExpensesState>(
+                                builder: (BuildContext context,
+                                    GetTotalExpensesState state) {
+                                  if (state is LoadingGetTotalExpenses) {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  } else if (state
+                                      is AuthenticatedGetTotalExpenses) {
+                                    return Text(
+                                      'Rp. ${state.totalExpenses},-',
+                                      style: TextStyle(color: Colors.white),
+                                    );
+                                  } else if (state
+                                      is UnauthenticatedGetTotalExpenses) {
+                                    return Text(
+                                      state.message,
+                                      style: TextStyle(color: Colors.white),
+                                    );
+                                  } else {
+                                    return SizedBox();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                Strings.incomeTotal,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              BlocBuilder<GetTotalIncomesBloc,
+                                  GetTotalIncomesState>(
+                                builder: (BuildContext context,
+                                    GetTotalIncomesState state) {
+                                  if (state is LoadingGetTotalIncomes) {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  } else if (state
+                                      is AuthenticatedGetTotalIncomes) {
+                                    return Text(
+                                      'Rp. ${state.totalIncomes},-',
+                                      style: TextStyle(color: Colors.white),
+                                    );
+                                  } else if (state
+                                      is UnauthenticatedGetTotalIncomes) {
+                                    return Text(
+                                      state.message,
+                                      style: TextStyle(color: Colors.white),
+                                    );
+                                  } else {
+                                    return SizedBox();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return Container(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      expenses = true;
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        expenses ? Colors.blue : Colors.grey,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  child: Text(Strings.expense,
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      expenses = false;
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        expenses ? Colors.grey : Colors.blue,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  child: Text(Strings.income,
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                              ],
+                            ),
+                          ),
+                          expenses ? ExpensesScreen() : IncomesScreen(),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
