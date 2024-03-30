@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 abstract class AddIncomeEvent extends Equatable {}
 
 class AddIncome extends AddIncomeEvent {
-  final String id;
   final String category;
   final String name;
   final double amount;
@@ -13,7 +12,6 @@ class AddIncome extends AddIncomeEvent {
   final String paidMethod;
 
   AddIncome({
-    required this.id,
     required this.category,
     required this.name,
     required this.amount,

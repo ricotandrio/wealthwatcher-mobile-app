@@ -30,7 +30,7 @@ class Expenses extends Management {
       id: data['id'] ?? '',
       category: data['category'] ?? '',
       name: data['name'] ?? '',
-      amount: (data['amount'] ?? 0).toDouble(), 
+      amount: (data['amount'] ?? 0).toDouble(),
       date: data['date'] ?? '',
       description: data['description'] ?? '',
       paidMethod: data['paidMethod'] ?? '',

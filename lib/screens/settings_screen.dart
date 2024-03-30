@@ -17,7 +17,7 @@ import 'package:wealthwatcher/controller/firebase/income_repository.dart';
 import 'package:wealthwatcher/controller/firebase/user_repository.dart';
 import 'package:wealthwatcher/models/database/incomes.dart';
 import 'package:wealthwatcher/resources/strings.dart';
-import 'package:wealthwatcher/screens/add_expense_screen.dart';
+import 'package:wealthwatcher/screens/add_management_screen.dart';
 import 'package:wealthwatcher/screens/expenses_screen.dart';
 import 'package:wealthwatcher/screens/incomes_screen.dart';
 import 'package:wealthwatcher/screens/login_screen.dart';
@@ -45,40 +45,53 @@ class SettingsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  BlocConsumer<LogoutBloc, LogoutState>(
-                    listener: (context, state) {
-                      if (state is LoadingLogout) {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: BlocConsumer<LogoutBloc, LogoutState>(
+                      listener: (context, state) {
+                        if (state is LoadingLogout) {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          );
+                        } else if (state is AuthenticatedLogout) {
+                          Navigator.of(context).pop();
+                          context.go('/login');
+                        } else if (state is UnauthenticatedLogout) {
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(Strings.logoutFailed),
+                            ),
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return ElevatedButton.icon(
+                          onPressed: () => {
+                            BlocProvider.of<LogoutBloc>(context)
+                                .add(LogoutRequested())
                           },
-                        );
-                      } else if (state is AuthenticatedLogout) {
-                        Navigator.of(context).pop();
-                        context.go('/login');
-                      } else if (state is UnauthenticatedLogout) {
-                        Navigator.of(context).pop();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(Strings.logoutFailed),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.blue), 
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5), 
+                                side: BorderSide(color: Colors.blue), 
+                              ),
+                            ),
+                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.fromLTRB(25, 20, 25, 20)),
                           ),
+                          icon: Icon(Icons.logout, color: Colors.white),
+                          label: Text(Strings.logout, style: TextStyle(color: Colors.white)),
                         );
-                      }
-                    },
-                    builder: (context, state) {
-                      return ElevatedButton.icon(
-                        onPressed: () => {
-                          BlocProvider.of<LogoutBloc>(context)
-                              .add(LogoutRequested())
-                        },
-                        icon: Icon(Icons.logout),
-                        label: Text(Strings.logout),
-                      );
-                    },
+                      },
+                    ),
                   ),
                 ],
               ),

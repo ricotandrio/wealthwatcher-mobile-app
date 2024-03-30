@@ -1,5 +1,5 @@
 class Strings {
-  static String appName = 'Wealth Watcher';
+  static String app = 'Wealth Watcher';
 
   static const String login = 'Login';
   static const String loginBanner = 'Login to your account';
@@ -31,10 +31,12 @@ class Strings {
   static const String confirmPasswordEmpty = 'Confirm Password cannot be empty';
   static const String confirmPasswordInvalid = 'Confirm Password is invalid';
   static const String confirmPasswordHint = 'Enter your password';
-  static const String confirmPasswordMismatch = 'Password and Confirm Password must match';
+  static const String confirmPasswordMismatch =
+      'Password and Confirm Password must match';
+
   static const String haveAccount = 'Already have an account ?';
   static const String noAccount = 'Didn\'t have an account ?';
-  
+
   static const String menu1 = 'Dashboard';
   static const String menu2 = 'Analytics';
   static const String menu3 = 'Balance';
@@ -51,5 +53,38 @@ class Strings {
   static const String logoutSuccess = 'Logged out successfully';
   static const String logoutFailed = 'Failed to logout user';
 
-  static const String app = 'Wealth Watcher';
+  static const String management = 'Create new Management';
+  static const String addExpense = 'Add Expense';
+  static const String addIncome = 'Add Income';
+
+  static const String addExpenseSuccess = 'Expense added successfully';
+  static const String addExpenseFailed = 'Failed to add expense';
+
+  static const String addIncomeSuccess = 'Income added successfully';
+  static const String addIncomeFailed = 'Failed to add income';
+
+  static const String name = 'Name';
+  static const String nameEmpty = 'Name cannot be empty';
+  static const String nameHint = 'Enter the name';
+
+  static const String category = 'Category';
+  static const String categoryEmpty = 'Category cannot be empty';
+  static const String categoryHint = 'Enter the category';
+
+  static const String amount = 'Amount';
+  static const String amountEmpty = 'Amount cannot be empty';
+  static const String amountInvalid = 'Amount is invalid';
+  static const String amountHint = 'Enter the amount';
+
+  static const String date = 'Date';
+  static const String dateEmpty = 'Date cannot be empty';
+  static const String dateHint = 'Enter the date';
+
+  static const String description = 'Description';
+  static const String descriptionHint = 'Enter the description';
+
+  static const String paidMethod = 'Paid Method';
+  static const String paidMethodEmpty = 'Paid Method cannot be empty';
+  static const String paidMethodHint = 'Enter the paid method';
+
 }

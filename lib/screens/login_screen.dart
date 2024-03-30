@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
       create: (context) => LoginRepository(),
       child: BlocProvider(
         create: (context) => LoginBloc(
-          loginRepository: RepositoryProvider.of<LoginRepository>(context),
+          loginRepository: LoginRepository(),
           userRepository: UserRepository(),
         ),
         child: Scaffold(

@@ -11,13 +11,10 @@ import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
 import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
 import 'package:wealthwatcher/controller/firebase/income_repository.dart';
-import 'package:wealthwatcher/models/database/incomes.dart';
 import 'package:wealthwatcher/resources/strings.dart';
-import 'package:wealthwatcher/screens/add_expense_screen.dart';
+import 'package:wealthwatcher/screens/add_management_screen.dart';
 import 'package:wealthwatcher/screens/expenses_screen.dart';
 import 'package:wealthwatcher/screens/incomes_screen.dart';
-import 'package:wealthwatcher/utils/date_format.dart';
-import 'package:wealthwatcher/utils/icon_category.dart';
 
 bool expenses = true;
 
@@ -34,7 +31,7 @@ class DashboardScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => AddExpenseScreen()),
+                builder: (context) => AddManagementScreen()),
           );
         },
         shape: RoundedRectangleBorder(

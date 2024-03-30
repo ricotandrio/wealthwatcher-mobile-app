@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 abstract class AddExpenseEvent extends Equatable {}
 
 class AddExpense extends AddExpenseEvent {
-  final String id;
   final String category;
   final String name;
   final double amount;
@@ -13,7 +12,6 @@ class AddExpense extends AddExpenseEvent {
   final String paidMethod;
 
   AddExpense({
-    required this.id,
     required this.category,
     required this.name,
     required this.amount,
