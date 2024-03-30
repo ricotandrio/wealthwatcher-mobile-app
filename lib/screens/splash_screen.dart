@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wealthwatcher/resources/images.dart';
+import 'package:wealthwatcher/resources/strings.dart';
+import 'package:wealthwatcher/screens/home_screen.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 2), () {
+      context.go('/home');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,11 +26,10 @@ class SplashScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset(Images.splashImage,
-                  width: 200), // Adjust width as needed
-              SizedBox(height: 20), // Add spacing between image and text
+              Image.asset(Images.splashImage, width: 200),
+              SizedBox(height: 20),
               Text(
-                'Wealth Watcher',
+                Strings.app,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
               ),
               SizedBox(height: 20),

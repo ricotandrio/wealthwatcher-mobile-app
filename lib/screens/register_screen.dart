@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
@@ -22,7 +23,8 @@ class RegisterScreen extends StatelessWidget {
       create: (context) => RegisterRepository(),
       child: BlocProvider(
         create: (context) => RegisterBloc(
-          registerRepository: RepositoryProvider.of<RegisterRepository>(context),
+          registerRepository: RegisterRepository(),
+          userRepository: UserRepository(),
         ),
         child: Scaffold(
           body: Padding(
@@ -117,36 +119,35 @@ class RegisterScreen extends StatelessWidget {
                   ]),
                   SizedBox(height: 80.0),
                   BlocConsumer<RegisterBloc, RegisterState>(
-                    listener: (BuildContext context, RegisterState state) async {
+                    listener:
+                        (BuildContext context, RegisterState state) async {
                       if (state is LoadingRegister) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(Strings.loading),
-                          ),
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
                         );
                       } else if (state is UnauthenticatedRegister) {
+                        Navigator.of(context).pop();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(Strings.registerFailed),
                           ),
                         );
                       } else if (state is AuthenticatedRegister) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(Strings.registerSuccess),
-                          ),
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
-                        );
+                        Navigator.of(context).pop();
+                        context.go('/');
                       };
                     },
                     builder: (context, state) {
                       return ElevatedButton(
                         onPressed: () {
-                          if (_confirmPasswordController.text != _passwordController.text) {
+                          if (_confirmPasswordController.text !=
+                              _passwordController.text) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(Strings.confirmPasswordMismatch),

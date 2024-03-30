@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
 import 'package:wealthwatcher/controller/firebase/user_repository.dart';
-import 'package:wealthwatcher/controller/services/user_service.dart';
 import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/home_screen.dart';
 import 'package:wealthwatcher/screens/register_screen.dart';
@@ -23,7 +23,8 @@ class LoginScreen extends StatelessWidget {
       create: (context) => LoginRepository(),
       child: BlocProvider(
         create: (context) => LoginBloc(
-          loginRepository: RepositoryProvider.of<LoginRepository>(context),
+          loginRepository: LoginRepository(),
+          userRepository: UserRepository(),
         ),
         child: Scaffold(
           body: Padding(
@@ -96,7 +97,7 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(height: 80.0),
                   BlocConsumer<LoginBloc, LoginState>(
                     listener: (context, state) {
-                      if (state is LoadingLogin){
+                      if (state is LoadingLogin) {
                         showDialog(
                           context: context,
                           barrierDismissible: false,
@@ -107,13 +108,10 @@ class LoginScreen extends StatelessWidget {
                           },
                         );
                       } else if (state is AuthenticatedLogin) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SplashScreen(),
-                          ),
-                        );
+                        Navigator.of(context).pop();
+                        context.go('/');
                       } else if (state is UnauthenticatedLogin) {
+                        Navigator.of(context).pop();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(Strings.loginFailed),

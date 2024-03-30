@@ -150,4 +150,36 @@ class IncomeRepository {
       throw Exception('Failed to update incomes: ${e.toString()}');
     }
   }
+
+  Future<double> getTotalIncomes() async {
+    try {
+      if (_firebaseAuth.currentUser == null) {
+        throw FirebaseAuthException(code: '500', message: 'User not logged in');
+      }
+
+      final response = await _firestore
+          .collection('users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .collection('incomes')
+          .get();
+
+      final List<Incomes> incomes = response.docs.isNotEmpty
+          ? response.docs.map((e) => Incomes.fromMap(e.data())).toList()
+          : [];
+
+      double totalIncomes = 0.0;
+
+      incomes.forEach((element) {
+        totalIncomes += element.amount;
+      });
+
+      return totalIncomes;
+    } on FirebaseAuthException catch (e) {
+      throw Exception('FirebaseAuthException: ${e.message}');
+    } on FirebaseException catch (e) {
+      throw Exception('FirebaseException: ${e.message}');
+    } catch (e) {
+      throw Exception('Failed to get total incomes: ${e.toString()}');
+    }
+  }
 }

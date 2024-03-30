@@ -52,3 +52,55 @@ class AuthenticatedLogin extends LoginState {
   @override
   List<Object> get props => [user];
 }
+
+// Logout state
+abstract class LogoutState extends Equatable {
+  const LogoutState();
+  @override
+  List<Object> get props => [];
+}
+
+class LoadingLogout extends LogoutState {
+  @override
+  List<Object> get props => [];
+}
+
+class UnauthenticatedLogout extends LogoutState {
+  final String message;
+  const UnauthenticatedLogout({required this.message});
+  @override
+  List<Object> get props => [message];
+}
+
+class AuthenticatedLogout extends LogoutState {
+  final String message;
+  const AuthenticatedLogout({required this.message});
+  @override
+  List<Object> get props => [message];
+}
+
+// Total balance state
+abstract class TotalBalanceState extends Equatable {
+  const TotalBalanceState();
+  @override
+  List<Object> get props => [];
+}
+
+class LoadingTotalBalance extends TotalBalanceState {
+  @override
+  List<Object> get props => [];
+}
+
+class UnauthenticatedTotalBalance extends TotalBalanceState {
+  final String message;
+  const UnauthenticatedTotalBalance({required this.message});
+  @override
+  List<Object> get props => [message];
+}
+
+class AuthenticatedTotalBalance extends TotalBalanceState {
+  final double totalBalance;
+  const AuthenticatedTotalBalance({required this.totalBalance});
+  @override
+  List<Object> get props => [totalBalance];
+}

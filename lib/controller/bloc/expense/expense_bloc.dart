@@ -29,7 +29,8 @@ class AddExpenseBloc extends Bloc<AddExpenseEvent, AddExpenseState> {
 }
 
 // Get all expenses bloc
-class GetAllExpensesBloc extends Bloc<GetAllExpensesEvent, GetAllExpensesState> {
+class GetAllExpensesBloc
+    extends Bloc<GetAllExpensesEvent, GetAllExpensesState> {
   final ExpenseRepository expensesRepository;
 
   GetAllExpensesBloc({required this.expensesRepository})
@@ -84,6 +85,25 @@ class UpdateExpenseBloc extends Bloc<UpdateExpenseEvent, UpdateExpenseState> {
         emit(AuthenticatedUpdateExpense(expense: response));
       } catch (e) {
         emit(UnauthenticatedUpdateExpense(message: e.toString()));
+      }
+    });
+  }
+}
+
+// Get total expenses bloc
+class GetTotalExpensesBloc
+    extends Bloc<GetTotalExpensesEvent, GetTotalExpensesState> {
+  final ExpenseRepository expensesRepository;
+
+  GetTotalExpensesBloc({required this.expensesRepository})
+      : super(UnauthenticatedGetTotalExpenses(message: '')) {
+    on<GetTotalExpenses>((event, emit) async {
+      emit(LoadingGetTotalExpenses());
+      try {
+        final response = await expensesRepository.getTotalExpenses();
+        emit(AuthenticatedGetTotalExpenses(totalExpenses: response));
+      } catch (e) {
+        emit(UnauthenticatedGetTotalExpenses(message: e.toString()));
       }
     });
   }

@@ -105,3 +105,29 @@ class AuthenticatedUpdateExpense extends UpdateExpenseState {
   @override
   List<Object> get props => [expense];
 }
+
+// Get total expenses state
+class GetTotalExpensesState extends Equatable {
+  const GetTotalExpensesState();
+  @override
+  List<Object> get props => [];
+}
+
+class LoadingGetTotalExpenses extends GetTotalExpensesState {
+  @override
+  List<Object> get props => [];
+}
+
+class UnauthenticatedGetTotalExpenses extends GetTotalExpensesState {
+  final String message;
+  const UnauthenticatedGetTotalExpenses({required this.message});
+  @override
+  List<Object> get props => [message];
+}
+
+class AuthenticatedGetTotalExpenses extends GetTotalExpensesState {
+  final double totalExpenses;
+  const AuthenticatedGetTotalExpenses({required this.totalExpenses});
+  @override
+  List<Object> get props => [totalExpenses];
+}

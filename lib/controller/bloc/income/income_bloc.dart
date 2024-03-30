@@ -89,3 +89,21 @@ class UpdateIncomeBloc extends Bloc<UpdateIncomeEvent, UpdateIncomeState> {
     });
   }
 }
+
+// Get total incomes bloc
+class GetTotalIncomesBloc extends Bloc<GetTotalIncomesEvent, GetTotalIncomesState> {
+  final IncomeRepository incomeRepository;
+
+  GetTotalIncomesBloc({required this.incomeRepository})
+      : super(UnauthenticatedGetTotalIncomes(message: '')) {
+    on<GetTotalIncomes>((event, emit) async {
+      emit(LoadingGetTotalIncomes());
+      try {
+        final response = await incomeRepository.getTotalIncomes();
+        emit(AuthenticatedGetTotalIncomes(totalIncomes: response));
+      } catch (e) {
+        emit(UnauthenticatedGetTotalIncomes(message: e.toString()));
+      }
+    });
+  }
+}
