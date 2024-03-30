@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
 import 'package:wealthwatcher/controller/firebase/user_repository.dart';
-import 'package:wealthwatcher/controller/services/user_service.dart';
 import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/home_screen.dart';
 import 'package:wealthwatcher/screens/register_screen.dart';
@@ -108,10 +108,10 @@ class LoginScreen extends StatelessWidget {
                           },
                         );
                       } else if (state is AuthenticatedLogin) {
-                        Navigator.pop(context);
-                        
+                        Navigator.of(context).pop();
+                        context.go('/');
                       } else if (state is UnauthenticatedLogin) {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(Strings.loginFailed),

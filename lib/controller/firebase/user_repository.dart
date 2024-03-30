@@ -54,7 +54,7 @@ class RegisterRepository {
 class LoginRepository {
   final _firebaseAuth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  
+
   Future<dynamic> signIn(
       {required String email, required String password}) async {
     try {
@@ -84,7 +84,6 @@ class LoginRepository {
         expenses: [],
         incomes: [],
       );
-
     } on FirebaseAuthException catch (e) {
       throw Exception('Failed to sign in: ${e.message}');
     } on FirebaseException catch (e) {
@@ -117,9 +116,10 @@ class UserRepository {
     );
   }
 
-  Future<void> signOut() async {
+  Future<String> signOut() async {
     try {
       await _firebaseAuth.signOut();
+      return 'Sign out successfully';
     } on FirebaseAuthException catch (e) {
       throw Exception('Failed to sign out: ${e.message}');
     } catch (e) {

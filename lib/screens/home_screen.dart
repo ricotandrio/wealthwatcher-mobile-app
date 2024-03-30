@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/dashboard_screen.dart';
 import 'package:wealthwatcher/screens/settings_screen.dart';
@@ -26,9 +28,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    final auth = FirebaseAuth.instance;
+    if (auth.currentUser == null) {
+      context.go('/login');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(_menuTitles[_selectedIndex]),
       ),
       body: IndexedStack(

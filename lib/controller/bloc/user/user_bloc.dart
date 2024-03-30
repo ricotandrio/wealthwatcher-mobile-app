@@ -50,8 +50,8 @@ class LogoutBloc extends Bloc<LogoutEvent, LogoutState> {
     on<LogoutRequested>((event, emit) async {
       emit(LoadingLogout());
       try {
-        await userRepository.signOut();
-        emit(UnauthenticatedLogout(message: 'Log Out Successfully'));
+        final response = await userRepository.signOut();
+        emit(AuthenticatedLogout(message: response));
       } catch (e) {
         emit(UnauthenticatedLogout(message: e.toString()));
       }

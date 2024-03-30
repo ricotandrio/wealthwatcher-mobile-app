@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_event.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_state.dart';
@@ -55,11 +58,10 @@ class SettingsScreen extends StatelessWidget {
                           },
                         );
                       } else if (state is AuthenticatedLogout) {
-                        Navigator.pop(context);
-
+                        Navigator.of(context).pop();
+                        context.go('/login');
                       } else if (state is UnauthenticatedLogout) {
-                        Navigator.pop(context);
-
+                        Navigator.of(context).pop();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(Strings.logoutFailed),
