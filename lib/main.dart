@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wealthwatcher/firebase_options.dart';
-import 'package:wealthwatcher/screens/add_management_screen.dart';
+import 'package:wealthwatcher/screens/add_managements_screen.dart';
 import 'package:wealthwatcher/screens/dashboard_screen.dart';
 import 'package:wealthwatcher/screens/home_screen.dart';
 import 'package:wealthwatcher/screens/login_screen.dart';
@@ -37,8 +37,9 @@ class MyApp extends StatelessWidget {
             ),
             GoRoute(
               path: 'add-expense',
-              builder: (context, state) => AddManagementScreen(),
+              builder: (context, state) => AddManagementsScreen(),
             ),
+            
           ],
         ),
         GoRoute(
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
           path: '/register',
           builder: (context, state) => RegisterScreen(),
         ),
+        GoRoute(path: '/demo', builder: (context, state) => AddManagementsScreen(),),
       ],
     );
 

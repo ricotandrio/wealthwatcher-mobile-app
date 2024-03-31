@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_event.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_state.dart';
@@ -12,7 +13,7 @@ import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
 import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
 import 'package:wealthwatcher/controller/firebase/income_repository.dart';
 import 'package:wealthwatcher/resources/strings.dart';
-import 'package:wealthwatcher/screens/add_management_screen.dart';
+import 'package:wealthwatcher/screens/add_managements_screen.dart';
 import 'package:wealthwatcher/screens/expenses_screen.dart';
 import 'package:wealthwatcher/screens/incomes_screen.dart';
 
@@ -27,12 +28,7 @@ class DashboardScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // add new expense
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AddManagementScreen()),
-          );
+          GoRouter.of(context).push('/add-expense');
         },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),

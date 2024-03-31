@@ -56,12 +56,28 @@ class Strings {
   static const String management = 'Create new Management';
   static const String addExpense = 'Add Expense';
   static const String addIncome = 'Add Income';
+  static const String deleteExpense = 'Delete Expense';
+  static const String deleteIncome = 'Delete Income';
+  static const String updateExpense = 'Update Expense';
+  static const String updateIncome = 'Update Income';
 
   static const String addExpenseSuccess = 'Expense added successfully';
   static const String addExpenseFailed = 'Failed to add expense';
 
+  static const String deleteExpenseSuccess = 'Expense deleted successfully';
+  static const String deleteExpenseFailed = 'Failed to delete expense';
+
+  static const String updateExpenseSuccess = 'Expense updated successfully';
+  static const String updateExpenseFailed = 'Failed to update expense';
+
   static const String addIncomeSuccess = 'Income added successfully';
   static const String addIncomeFailed = 'Failed to add income';
+
+  static const String deleteIncomeSuccess = 'Income deleted successfully';
+  static const String deleteIncomeFailed = 'Failed to delete income';
+
+  static const String updateIncomeSuccess = 'Income updated successfully';
+  static const String updateIncomeFailed = 'Failed to update income';
 
   static const String name = 'Name';
   static const String nameEmpty = 'Name cannot be empty';
