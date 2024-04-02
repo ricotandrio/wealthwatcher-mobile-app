@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_event.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_state.dart';
@@ -13,17 +14,23 @@ import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
 import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
 import 'package:wealthwatcher/controller/firebase/income_repository.dart';
 import 'package:wealthwatcher/resources/strings.dart';
-import 'package:wealthwatcher/screens/add_managements_screen.dart';
-import 'package:wealthwatcher/screens/expenses_screen.dart';
-import 'package:wealthwatcher/screens/incomes_screen.dart';
+import 'package:wealthwatcher/screens/expenses_view.dart';
+import 'package:wealthwatcher/screens/incomes_view.dart';
 
 bool expenses = true;
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen>
+    with TickerProviderStateMixin {
+  @override
   Widget build(BuildContext context) {
+    TabController? _tabController = TabController(length: 2, vsync: this);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
@@ -58,6 +65,16 @@ class DashboardScreen extends StatelessWidget {
                 incomeRepository: IncomeRepository(),
               )..add(GetTotalBalance()),
             ),
+            BlocProvider<GetAllExpensesBloc>(
+              create: (context) =>
+                  GetAllExpensesBloc(expensesRepository: ExpenseRepository())
+                    ..add(GetAllExpenses()),
+            ),
+            BlocProvider<GetAllIncomesBloc>(
+              create: (context) =>
+                  GetAllIncomesBloc(incomeRepository: IncomeRepository())
+                    ..add(GetAllIncomes()),
+            ),
           ],
           child: SingleChildScrollView(
             child: Column(
@@ -80,7 +97,7 @@ class DashboardScreen extends StatelessWidget {
                             children: <Widget>[
                               Text(
                                 Strings.balanceTotal,
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
@@ -97,7 +114,7 @@ class DashboardScreen extends StatelessWidget {
                                       is AuthenticatedTotalBalance) {
                                     return Text(
                                       'Rp. ${state.totalBalance},-',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                         color: Colors.white,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500,
@@ -107,7 +124,7 @@ class DashboardScreen extends StatelessWidget {
                                       is UnauthenticatedTotalBalance) {
                                     return Text(
                                       state.message,
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                         color: Colors.white,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500,
@@ -131,7 +148,7 @@ class DashboardScreen extends StatelessWidget {
                             children: <Widget>[
                               Text(
                                 Strings.expenseTotal,
-                                style: TextStyle(color: Colors.white),
+                                style: GoogleFonts.poppins(color: Colors.white),
                               ),
                               BlocBuilder<GetTotalExpensesBloc,
                                   GetTotalExpensesState>(
@@ -145,13 +162,15 @@ class DashboardScreen extends StatelessWidget {
                                       is AuthenticatedGetTotalExpenses) {
                                     return Text(
                                       'Rp. ${state.totalExpenses},-',
-                                      style: TextStyle(color: Colors.white),
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.white),
                                     );
                                   } else if (state
                                       is UnauthenticatedGetTotalExpenses) {
                                     return Text(
                                       state.message,
-                                      style: TextStyle(color: Colors.white),
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.white),
                                     );
                                   } else {
                                     return SizedBox();
@@ -165,7 +184,7 @@ class DashboardScreen extends StatelessWidget {
                             children: <Widget>[
                               Text(
                                 Strings.incomeTotal,
-                                style: TextStyle(color: Colors.white),
+                                style: GoogleFonts.poppins(color: Colors.white),
                               ),
                               BlocBuilder<GetTotalIncomesBloc,
                                   GetTotalIncomesState>(
@@ -179,13 +198,15 @@ class DashboardScreen extends StatelessWidget {
                                       is AuthenticatedGetTotalIncomes) {
                                     return Text(
                                       'Rp. ${state.totalIncomes},-',
-                                      style: TextStyle(color: Colors.white),
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.white),
                                     );
                                   } else if (state
                                       is UnauthenticatedGetTotalIncomes) {
                                     return Text(
                                       state.message,
-                                      style: TextStyle(color: Colors.white),
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.white),
                                     );
                                   } else {
                                     return SizedBox();
@@ -199,59 +220,94 @@ class DashboardScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
-                    return Container(
+                Column(
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.only(top: 20),
+                      height: 50,
+                      width: double.maxFinite,
+                      child: TabBar(
+                        labelPadding: EdgeInsets.only(left: 0, right: 0),
+                        controller: _tabController,
+                        labelColor: Colors.blue,
+                        unselectedLabelColor: Colors.black,
+                        tabs: [
+                          Tab(
+                            text: Strings.expense,
+                          ),
+                          Tab(
+                            text: Strings.income,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height - 110,
+                      width: double.maxFinite,
                       child: Column(
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.all(10.0),
-                            padding: EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      expenses = true;
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        expenses ? Colors.blue : Colors.grey,
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    child: BlocBuilder<GetAllExpensesBloc,
+                                        GetAllExpensesState>(
+                                      builder: (BuildContext context,
+                                          GetAllExpensesState state) {
+                                        if (state is LoadingGetTotalExpenses) {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        } else if (state
+                                            is AuthenticatedGetAllExpenses) {
+                                          return ExpensesView(
+                                            expenses: state.expenses,
+                                          );
+                                        } else if (state
+                                            is UnauthenticatedGetAllExpenses) {
+                                          return Text(state.message);
+                                        } else {
+                                          return SizedBox();
+                                        }
+                                      },
                                     ),
                                   ),
-                                  child: Text(Strings.expense,
-                                      style: TextStyle(color: Colors.white)),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      expenses = false;
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        expenses ? Colors.grey : Colors.blue,
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
+                                Center(
+                                  child: Container(
+                                    child: BlocBuilder<GetAllIncomesBloc,
+                                        GetAllIncomesState>(
+                                      builder: (BuildContext context,
+                                          GetAllIncomesState state) {
+                                        if (state is LoadingGetAllIncomes) {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        } else if (state
+                                            is AuthenticatedGetAllIncomes) {
+                                          return IncomesView(
+                                            incomes: state.incomes,
+                                          );
+                                        } else if (state
+                                            is UnauthenticatedGetAllIncomes) {
+                                          return Text(state.message);
+                                        } else {
+                                          return SizedBox();
+                                        }
+                                      },
                                     ),
                                   ),
-                                  child: Text(Strings.income,
-                                      style: TextStyle(color: Colors.white)),
                                 ),
                               ],
                             ),
                           ),
-                          expenses ? ExpensesScreen() : IncomesScreen(),
                         ],
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ],
             ),

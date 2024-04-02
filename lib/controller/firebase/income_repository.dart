@@ -72,6 +72,8 @@ class IncomeRepository {
           ? response.docs.map((e) => Incomes.fromMap(e.data())).toList()
           : [];
 
+      incomes.sort((a, b) => b.date.compareTo(a.date));
+      
       return incomes;
     } on FirebaseAuthException catch (e) {
       throw Exception('FirebaseAuthException: ${e.message}');

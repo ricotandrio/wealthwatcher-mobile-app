@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wealthwatcher/resources/images.dart';
 import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/home_screen.dart';
@@ -30,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
               SizedBox(height: 20),
               Text(
                 Strings.app,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+                style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.normal),
               ),
               SizedBox(height: 20),
               CircularProgressIndicator(

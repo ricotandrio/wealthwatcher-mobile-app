@@ -9,6 +9,7 @@ import 'package:wealthwatcher/screens/register_screen.dart';
 import 'package:wealthwatcher/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wealthwatcher/screens/welcome_screen.dart';
 
 void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final goRouter = GoRouter(
-      initialLocation: '/',
+      initialLocation: '/dashboard',
       debugLogDiagnostics: true,
       routes: [
         GoRoute(
@@ -39,8 +40,11 @@ class MyApp extends StatelessWidget {
               path: 'add-expense',
               builder: (context, state) => AddManagementsScreen(),
             ),
-            
           ],
+        ),
+        GoRoute(
+          path: '/welcome',
+          builder: (context, state) => WelcomeScreen(),
         ),
         GoRoute(
           path: '/login',
@@ -50,7 +54,10 @@ class MyApp extends StatelessWidget {
           path: '/register',
           builder: (context, state) => RegisterScreen(),
         ),
-        GoRoute(path: '/demo', builder: (context, state) => AddManagementsScreen(),),
+        GoRoute(
+          path: '/demo',
+          builder: (context, state) => AddManagementsScreen(),
+        ),
       ],
     );
 
@@ -59,7 +66,6 @@ class MyApp extends StatelessWidget {
       routeInformationParser: goRouter.routeInformationParser,
       routeInformationProvider: goRouter.routeInformationProvider,
       debugShowCheckedModeBanner: false,
-
     );
   }
 }

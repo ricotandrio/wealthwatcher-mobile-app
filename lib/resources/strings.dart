@@ -103,4 +103,7 @@ class Strings {
   static const String paidMethodEmpty = 'Paid Method cannot be empty';
   static const String paidMethodHint = 'Enter the paid method';
 
+  static const String welcome = 'Welcome';
+  static const String welcomeBanner = 'Stay organized and manage your expenses';
+
 }

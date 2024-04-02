@@ -78,6 +78,8 @@ class ExpenseRepository {
           ? response.docs.map((e) => Expenses.fromMap(e.data())).toList()
           : [];
 
+      expenses.sort((a, b) => b.date.compareTo(a.date));
+
       return expenses;
     } on FirebaseAuthException catch (e) {
       throw Exception('FirebaseAuthException: ${e.message}');

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
@@ -34,7 +35,7 @@ class RegisterScreen extends StatelessWidget {
               children: [
                 Text(
                   Strings.registerBanner,
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                   ),
@@ -108,7 +109,7 @@ class RegisterScreen extends StatelessWidget {
                     },
                     child: Text(
                       Strings.haveAccount, // Text to display on the button
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 16, // Font size of the text
                         color: Colors.blue, // Color of the text
                       ),
@@ -174,7 +175,7 @@ class RegisterScreen extends StatelessWidget {
                       ),
                       child: Text(
                         Strings.register,
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                             color: Colors.white, fontWeight: FontWeight.w300),
                       ),
                     );

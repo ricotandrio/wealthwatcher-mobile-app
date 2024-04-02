@@ -48,4 +48,16 @@ void loginUserTest() {
       expect(user, isNotNull);
     });
   });
+
+  test('Login Repository - Failed', () async {
+    try {
+      LoginRepository loginRepository = LoginRepository();
+      await loginRepository.signIn(
+        email: 'testunit@mail.com',
+        password: 'password',
+      );
+    } catch (e) {
+      expect(e, isA<Exception>());
+    }
+  });
 }

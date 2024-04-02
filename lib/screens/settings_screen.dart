@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
@@ -72,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
                             padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.fromLTRB(25, 20, 25, 20)),
                           ),
                           icon: Icon(Icons.logout, color: Colors.white),
-                          label: Text(Strings.logout, style: TextStyle(color: Colors.white)),
+                          label: Text(Strings.logout, style: GoogleFonts.poppins(color: Colors.white)),
                         );
                       },
                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_event.dart';
@@ -82,7 +83,7 @@ class ManagementForm extends StatelessWidget {
                         ),
                         child: Text(
                           Strings.date,
-                          style: TextStyle(fontSize: 16, color: Colors.white),
+                          style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
                         )),
                     SizedBox(height: 20),
     
@@ -122,7 +123,7 @@ class ManagementForm extends StatelessWidget {
     
                     // category
                     SizedBox(height: 20),
-                    Text(Strings.category, style: TextStyle(fontSize: 16)),
+                    Text(Strings.category, style: GoogleFonts.poppins(fontSize: 16)),
                     SizedBox(height: 5),
                     StatefulBuilder(
                       builder: (context, setState) {
@@ -215,7 +216,7 @@ class ManagementForm extends StatelessWidget {
                                 ),
                                 child: Text(
                                   Strings.addExpense,
-                                  style: TextStyle(color: Colors.white),
+                                  style: GoogleFonts.poppins(color: Colors.white),
                                 ),
                               );
                             },
@@ -274,7 +275,7 @@ class ManagementForm extends StatelessWidget {
                                 ),
                                 child: Text(
                                   Strings.addIncome,
-                                  style: TextStyle(color: Colors.white),
+                                  style: GoogleFonts.poppins(color: Colors.white),
                                 ),
                               );
                             },
