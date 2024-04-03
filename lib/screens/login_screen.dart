@@ -85,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      Strings.noAccount, // Text to display on the button
+                      Strings.noAccountQuestion, // Text to display on the button
                       style: GoogleFonts.poppins(
                         fontSize: 16, // Font size of the text
                         color: Colors.blue, // Color of the text

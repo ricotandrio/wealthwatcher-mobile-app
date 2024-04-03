@@ -108,7 +108,7 @@ class RegisterScreen extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      Strings.haveAccount, // Text to display on the button
+                      Strings.haveAccountQuestion, // Text to display on the button
                       style: GoogleFonts.poppins(
                         fontSize: 16, // Font size of the text
                         color: Colors.blue, // Color of the text

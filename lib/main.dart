@@ -14,6 +14,7 @@ import 'package:wealthwatcher/screens/welcome_screen.dart';
 void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
+  
   runApp(MyApp());
 }
 
@@ -32,14 +33,6 @@ class MyApp extends StatelessWidget {
               path: 'home',
               builder: (context, state) => HomeScreen(),
             ),
-            GoRoute(
-              path: 'dashboard',
-              builder: (context, state) => DashboardViewScreen(),
-            ),
-            GoRoute(
-              path: 'add-expense',
-              builder: (context, state) => DashboardAddScreen(),
-            ),
           ],
         ),
         GoRoute(
@@ -53,10 +46,6 @@ class MyApp extends StatelessWidget {
         GoRoute(
           path: '/register',
           builder: (context, state) => RegisterScreen(),
-        ),
-        GoRoute(
-          path: '/demo',
-          builder: (context, state) => DashboardAddScreen(),
         ),
       ],
     );

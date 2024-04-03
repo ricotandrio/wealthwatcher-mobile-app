@@ -79,7 +79,7 @@ class WelcomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(Strings.haveAccount),
+                    Text(Strings.haveAccountQuestion),
                     TextButton(
                       onPressed: () {
                         context.push('/login');

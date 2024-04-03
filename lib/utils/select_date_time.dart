@@ -10,18 +10,17 @@ class SelectDateTime {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      lastDate: DateTime(2100),
     );
-    if (pickedDate != null) {
-      
-        final DateTime selectedDateTime = DateTime(
-          pickedDate.year,
-          pickedDate.month,
-          pickedDate.day,
-        );
 
-        selectedDate.text = selectedDateTime.toIso8601String();
-      
+    if (pickedDate != null) {
+      final DateTime selectedDateTime = DateTime(
+        pickedDate.year,
+        pickedDate.month,
+        pickedDate.day,
+      );
+
+      selectedDate.text = selectedDateTime.toIso8601String();
     }
   }
 

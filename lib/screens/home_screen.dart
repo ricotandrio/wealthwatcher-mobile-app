@@ -14,11 +14,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  
   List<String> _menuTitles = [
-    Strings.menu1,
-    Strings.menu2,
-    Strings.menu3,
-    Strings.menu4
+    Strings.dashboard,
+    Strings.analytics,
+    Strings.balance,
+    Strings.settings
   ];
 
   void _onItemTapped(int index) {
@@ -71,19 +72,19 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),
-            label: Strings.menu1,
+            label: Strings.dashboard,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.analytics),
-            label: Strings.menu2,
+            label: Strings.analytics,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_balance_wallet),
-            label: Strings.menu3,
+            label: Strings.balance,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: Strings.menu4,
+            label: Strings.settings,
           ),
         ],
         selectedItemColor: Colors.blue,

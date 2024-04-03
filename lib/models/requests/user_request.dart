@@ -3,6 +3,5 @@ class UserRequest {
   final String password;
 
   UserRequest({required this.name, required this.password});
-
   
 }
