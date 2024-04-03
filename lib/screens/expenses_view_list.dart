@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wealthwatcher/controller/bloc/income/income_bloc.dart';
-import 'package:wealthwatcher/models/database/incomes.dart';
+import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
+import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
+import 'package:wealthwatcher/models/database/expenses.dart';
 import 'package:wealthwatcher/resources/strings.dart';
-import 'package:wealthwatcher/screens/income_view.dart';
+import 'package:wealthwatcher/screens/expense_view.dart';
 import 'package:wealthwatcher/utils/date_format.dart';
 
-class IncomesViewList extends StatelessWidget {
-  final List<Incomes> incomes;
+class ExpensesViewList extends StatelessWidget {
+  final List<Expenses> expenses;
 
-  IncomesViewList({required this.incomes});
+  ExpensesViewList({required this.expenses});
 
   @override
   Widget build(BuildContext context) {
-    final getAllIncomesBloc = BlocProvider.of<GetAllIncomesBloc>(context);
+    final getAllExpensesBloc = BlocProvider.of<GetAllExpensesBloc>(context);
 
     return Container(
       padding: EdgeInsets.all(20.0),
       child: ListView.builder(
-        itemCount: incomes.length,
+        itemCount: expenses.length,
         itemBuilder: (BuildContext context, int index) {
-          final income = incomes[index];
+          final expense = expenses[index];
           return Column(
             children: [
               GestureDetector(
@@ -29,14 +32,14 @@ class IncomesViewList extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context){
+                      builder: (context) {
                         return BlocProvider.value(
-                          value: getAllIncomesBloc,
-                          child: IncomeView(
-                            income: income,
+                          value: getAllExpensesBloc,
+                          child: ExpenseView(
+                            expense: expense,
                           ),
                         );
-                      }
+                      },
                     ),
                   );
                 },
@@ -45,21 +48,21 @@ class IncomesViewList extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                     side: BorderSide(
-                      color: Colors.green,
+                      color: Colors.red,
                     ),
                   ),
                   child: ListTile(
                     leading: Icon(Icons.category),
                     title: Text(
-                      income.name,
+                      expense.name,
                       style: GoogleFonts.poppins(),
                     ),
                     subtitle: Text(
-                      income.amount.toString(),
+                      expense.amount.toString(),
                       style: GoogleFonts.poppins(),
                     ),
                     trailing: Text(
-                      DateFormat.format(DateTime.parse(income.date)),
+                      DateFormat.format(DateTime.parse(expense.date)),
                       style: GoogleFonts.poppins(),
                     ),
                   ),

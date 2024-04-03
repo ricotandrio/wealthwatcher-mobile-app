@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wealthwatcher/resources/strings.dart';
-import 'package:wealthwatcher/screens/dashboard_screen.dart';
+import 'package:wealthwatcher/screens/dashboard_view_screen.dart';
 import 'package:wealthwatcher/screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: _selectedIndex,
         children: <Widget>[
-          DashboardScreen(),
+          DashboardViewScreen(),
           Container(
             child: Center(
               child: Text('Analytics Page'),

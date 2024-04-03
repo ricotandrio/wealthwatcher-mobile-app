@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
+import 'package:wealthwatcher/controller/bloc/income/income_bloc.dart';
 import 'package:wealthwatcher/resources/strings.dart';
-import 'package:wealthwatcher/screens/management_form.dart';
+import 'package:wealthwatcher/screens/expense_form.dart';
+import 'package:wealthwatcher/screens/income_form.dart';
 
-class AddManagementsScreen extends StatefulWidget {
+class DashboardAddScreen extends StatefulWidget {
   @override
-  State<AddManagementsScreen> createState() => _AddManagementsScreenState();
+  State<DashboardAddScreen> createState() => _DashboardAddScreenState();
 }
 
-class _AddManagementsScreenState extends State<AddManagementsScreen>
+class _DashboardAddScreenState extends State<DashboardAddScreen>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     TabController? _tabController = TabController(length: 2, vsync: this);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(Strings.management),
@@ -50,11 +55,10 @@ class _AddManagementsScreenState extends State<AddManagementsScreen>
                       controller: _tabController,
                       children: [
                         Center(
-                          child:
-                              ManagementForm(typeManagement: Strings.expense),
+                          child: ExpenseForm(),
                         ),
                         Center(
-                          child: ManagementForm(typeManagement: Strings.income),
+                          child: IncomeForm(),
                         ),
                       ],
                     ),
