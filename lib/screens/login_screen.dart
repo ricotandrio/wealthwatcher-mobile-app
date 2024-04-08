@@ -20,19 +20,20 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginBloc(
-        loginRepository: LoginRepository(),
-        userRepository: UserRepository(),
-      ),
-      child: Scaffold(
-        body: Padding(
+    final _authBloc = BlocProvider.of<AuthBloc>(context);
+
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(
+                  height: 50,
+                ),
                 Text(
                   Strings.loginBanner,
                   style: GoogleFonts.poppins(
@@ -85,7 +86,8 @@ class LoginScreen extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      Strings.noAccountQuestion, // Text to display on the button
+                      Strings
+                          .noAccountQuestion, // Text to display on the button
                       style: GoogleFonts.poppins(
                         fontSize: 16, // Font size of the text
                         color: Colors.blue, // Color of the text
@@ -94,9 +96,62 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ]),
                 SizedBox(height: 80.0),
-                BlocConsumer<LoginBloc, LoginState>(
-                  listener: (context, state) {
-                    if (state is LoadingLogin) {
+                // BlocConsumer<LoginBloc, LoginState>(
+                //   listener: (context, state) {
+                //     if (state is LoadingLogin) {
+                //       showDialog(
+                //         context: context,
+                //         barrierDismissible: false,
+                //         builder: (BuildContext context) {
+                //           return Center(
+                //             child: CircularProgressIndicator(),
+                //           );
+                //         },
+                //       );
+                //     } else if (state is AuthenticatedLogin) {
+                //       Navigator.of(context).pop();
+                //       context.go('/');
+                //     } else if (state is UnauthenticatedLogin) {
+                //       Navigator.of(context).pop();
+                //       ScaffoldMessenger.of(context).showSnackBar(
+                //         SnackBar(
+                //           content: Text(Strings.loginFailed),
+                //         ),
+                //       );
+                //     }
+                //   },
+                //   builder: (context, state) {
+                //     return ElevatedButton(
+                //       onPressed: () {
+                //         if (_formKey.currentState!.validate()) {
+                //           BlocProvider.of<LoginBloc>(context).add(
+                //             LoginRequested(
+                //               email: _usernameController.text,
+                //               password: _passwordController.text,
+                //             ),
+                //           );
+                //         }
+                //       },
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: Colors.blue,
+                //         padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
+                //         shape: RoundedRectangleBorder(
+                //           borderRadius:
+                //               BorderRadius.circular(5.0), // Rounded corners
+                //         ),
+                //       ),
+                //       child: Text(
+                //         Strings.login,
+                //         style: GoogleFonts.poppins(
+                //             color: Colors.white, fontWeight: FontWeight.w300),
+                //       ),
+                //     );
+                //   },
+                // ),
+
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: (BuildContext context, AuthState state) {
+                    if (state is LoadingAuth) {
                       showDialog(
                         context: context,
                         barrierDismissible: false,
@@ -106,10 +161,17 @@ class LoginScreen extends StatelessWidget {
                           );
                         },
                       );
-                    } else if (state is AuthenticatedLogin) {
+                    } else if (state is AuthenticatedUserAuth) {
                       Navigator.of(context).pop();
-                      context.go('/');
-                    } else if (state is UnauthenticatedLogin) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => BlocProvider.value(
+                            value: _authBloc,
+                            child: HomeScreen(),
+                          ),
+                        ),
+                      );
+                    } else if (state is UnauthenticatedAuth) {
                       Navigator.of(context).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -118,12 +180,12 @@ class LoginScreen extends StatelessWidget {
                       );
                     }
                   },
-                  builder: (context, state) {
+                  builder: (BuildContext context, AuthState state) {
                     return ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          BlocProvider.of<LoginBloc>(context).add(
-                            LoginRequested(
+                          _authBloc.add(
+                            LoginAuthRequested(
                               email: _usernameController.text,
                               password: _passwordController.text,
                             ),

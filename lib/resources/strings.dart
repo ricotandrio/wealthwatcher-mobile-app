@@ -20,6 +20,7 @@ class Strings {
   static const String analytics = 'Analytics';
   static const String balance = 'Balance';
   static const String settings = 'Settings';
+  static const String create = 'Create';
 
   // login
   static const String login = 'Login';
@@ -134,4 +135,9 @@ class Strings {
   static const String paidMethod = 'Paid Method';
   static const String paidMethodEmpty = 'Paid Method cannot be empty';
   static const String paidMethodHint = 'Enter the paid method';
+
+  // not loaded
+  static const String notLoaded = '*';
+
+  // 
 }

@@ -7,6 +7,7 @@ import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
 import 'package:wealthwatcher/controller/firebase/user_repository.dart';
 import 'package:wealthwatcher/resources/strings.dart';
+import 'package:wealthwatcher/screens/home_screen.dart';
 import 'package:wealthwatcher/screens/login_screen.dart';
 
 bool obscureText = true;
@@ -20,19 +21,20 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RegisterBloc(
-        registerRepository: RegisterRepository(),
-        userRepository: UserRepository(),
-      ),
-      child: Scaffold(
-        body: Padding(
+    final _authBloc = BlocProvider.of<AuthBloc>(context);
+
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(
+                  height: 50,
+                ),
                 Text(
                   Strings.registerBanner,
                   style: GoogleFonts.poppins(
@@ -103,12 +105,12 @@ class RegisterScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => LoginScreen()),
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                     },
                     child: Text(
-                      Strings.haveAccountQuestion, // Text to display on the button
+                      Strings
+                          .haveAccountQuestion, // Text to display on the button
                       style: GoogleFonts.poppins(
                         fontSize: 16, // Font size of the text
                         color: Colors.blue, // Color of the text
@@ -117,10 +119,74 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ]),
                 SizedBox(height: 80.0),
-                BlocConsumer<RegisterBloc, RegisterState>(
-                  listener:
-                      (BuildContext context, RegisterState state) async {
-                    if (state is LoadingRegister) {
+                // BlocConsumer<RegisterBloc, RegisterState>(
+                //   listener:
+                //       (BuildContext context, RegisterState state) async {
+                //     if (state is LoadingRegister) {
+                //       showDialog(
+                //         context: context,
+                //         barrierDismissible: false,
+                //         builder: (BuildContext context) {
+                //           return Center(
+                //             child: CircularProgressIndicator(),
+                //           );
+                //         },
+                //       );
+                //     } else if (state is UnauthenticatedRegister) {
+                //       Navigator.of(context).pop();
+                //       ScaffoldMessenger.of(context).showSnackBar(
+                //         SnackBar(
+                //           content: Text(Strings.registerFailed),
+                //         ),
+                //       );
+                //     } else if (state is AuthenticatedRegister) {
+                //       Navigator.of(context).pop();
+                //       context.go('/');
+                //     }
+                //     ;
+                //   },
+                //   builder: (context, state) {
+                //     return ElevatedButton(
+                //       onPressed: () {
+                //         if (_confirmPasswordController.text !=
+                //             _passwordController.text) {
+                //           ScaffoldMessenger.of(context).showSnackBar(
+                //             SnackBar(
+                //               content: Text(Strings.confirmPasswordMismatch),
+                //             ),
+                //           );
+                //           return;
+                //         }
+
+                //         if (_formKey.currentState!.validate()) {
+                //           BlocProvider.of<RegisterBloc>(context).add(
+                //             RegisterRequested(
+                //               email: _usernameController.text,
+                //               password: _passwordController.text,
+                //             ),
+                //           );
+                //         }
+                //         // Implement your registration logic here
+                //       },
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: Colors.blue,
+                //         padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
+                //         shape: RoundedRectangleBorder(
+                //           borderRadius:
+                //               BorderRadius.circular(5.0), // Rounded corners
+                //         ),
+                //       ),
+                //       child: Text(
+                //         Strings.register,
+                //         style: GoogleFonts.poppins(
+                //             color: Colors.white, fontWeight: FontWeight.w300),
+                //       ),
+                //     );
+                //   },
+                // ),
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: (BuildContext context, AuthState state) async {
+                    if (state is LoadingAuth) {
                       showDialog(
                         context: context,
                         barrierDismissible: false,
@@ -130,19 +196,24 @@ class RegisterScreen extends StatelessWidget {
                           );
                         },
                       );
-                    } else if (state is UnauthenticatedRegister) {
+                    } else if (state is UnauthenticatedAuth) {
                       Navigator.of(context).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(Strings.registerFailed),
                         ),
                       );
-                    } else if (state is AuthenticatedRegister) {
+                    } else if (state is AuthenticatedUserAuth) {
                       Navigator.of(context).pop();
-                      context.go('/');
-                    };
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(),
+                        ),
+                      );
+                    }
+                    ;
                   },
-                  builder: (context, state) {
+                  builder: (BuildContext context, AuthState state) {
                     return ElevatedButton(
                       onPressed: () {
                         if (_confirmPasswordController.text !=
@@ -154,10 +225,10 @@ class RegisterScreen extends StatelessWidget {
                           );
                           return;
                         }
-    
+
                         if (_formKey.currentState!.validate()) {
-                          BlocProvider.of<RegisterBloc>(context).add(
-                            RegisterRequested(
+                          _authBloc.add(
+                            RegisterAuthRequested(
                               email: _usernameController.text,
                               password: _passwordController.text,
                             ),

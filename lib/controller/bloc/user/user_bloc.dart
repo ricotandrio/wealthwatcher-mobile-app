@@ -10,12 +10,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final RegisterRepository registerRepository;
   final UserRepository userRepository;
 
-  RegisterBloc({required this.registerRepository, required this.userRepository}) : super(UnauthenticatedRegister(message: '')){
+  RegisterBloc({required this.registerRepository, required this.userRepository})
+      : super(UnauthenticatedRegister(message: '')) {
     on<RegisterRequested>((event, emit) async {
       emit(LoadingRegister());
       try {
-        await registerRepository.signUp(email: event.email, password: event.password);
-        
+        await registerRepository.signUp(
+            email: event.email, password: event.password);
+
         emit(AuthenticatedRegister(user: userRepository.getCurrentUser()));
       } catch (e) {
         emit(UnauthenticatedRegister(message: e.toString()));
@@ -29,11 +31,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepository loginRepository;
   final UserRepository userRepository;
 
-  LoginBloc({required this.loginRepository, required this.userRepository}) : super(UnauthenticatedLogin(message: '')){
+  LoginBloc({required this.loginRepository, required this.userRepository})
+      : super(UnauthenticatedLogin(message: '')) {
     on<LoginRequested>((event, emit) async {
       emit(LoadingLogin());
       try {
-        await loginRepository.signIn(email: event.email, password: event.password);
+        await loginRepository.signIn(
+            email: event.email, password: event.password);
         emit(AuthenticatedLogin(user: userRepository.getCurrentUser()));
       } catch (e) {
         emit(UnauthenticatedLogin(message: e.toString()));
@@ -46,7 +50,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 class LogoutBloc extends Bloc<LogoutEvent, LogoutState> {
   final UserRepository userRepository;
 
-  LogoutBloc({required this.userRepository}) : super(UnauthenticatedLogout(message: '')){
+  LogoutBloc({required this.userRepository})
+      : super(UnauthenticatedLogout(message: '')) {
     on<LogoutRequested>((event, emit) async {
       emit(LoadingLogout());
       try {
@@ -64,7 +69,9 @@ class TotalBalanceBloc extends Bloc<TotalBalanceEvent, TotalBalanceState> {
   final ExpenseRepository expenseRepository;
   final IncomeRepository incomeRepository;
 
-  TotalBalanceBloc({required this.expenseRepository, required this.incomeRepository}) : super(UnauthenticatedTotalBalance(message: '')){
+  TotalBalanceBloc(
+      {required this.expenseRepository, required this.incomeRepository})
+      : super(UnauthenticatedTotalBalance(message: '')) {
     on<GetTotalBalance>((event, emit) async {
       emit(LoadingTotalBalance());
       try {
@@ -74,6 +81,56 @@ class TotalBalanceBloc extends Bloc<TotalBalanceEvent, TotalBalanceState> {
         emit(AuthenticatedTotalBalance(totalBalance: totalBalance));
       } catch (e) {
         emit(UnauthenticatedTotalBalance(message: e.toString()));
+      }
+    });
+  }
+}
+
+// Auth Bloc
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final AuthRepository authRepository;
+
+  AuthBloc({required this.authRepository})
+      : super(UnauthenticatedAuth(message: '')) {
+    on<LoginAuthRequested>((event, emit) async {
+      emit(LoadingAuth());
+      try {
+        final response = await authRepository.signIn(
+            email: event.email, password: event.password);
+        emit(AuthenticatedUserAuth(user: response));
+      } catch (e) {
+        emit(UnauthenticatedAuth(message: e.toString()));
+      }
+    });
+
+    on<RegisterAuthRequested>((event, emit) async {
+      emit(LoadingAuth());
+      try {
+        final response = await authRepository.signUp(
+            email: event.email, password: event.password);
+        emit(AuthenticatedUserAuth(user: response));
+      } catch (e) {
+        emit(UnauthenticatedAuth(message: e.toString()));
+      }
+    });
+
+    on<LogoutAuthRequested>((event, emit) async {
+      emit(LoadingAuth());
+      try {
+        final response = await authRepository.signOut();
+        emit(AuthenticatedAuth(message: response));
+      } catch (e) {
+        emit(UnauthenticatedAuth(message: e.toString()));
+      }
+    });
+
+    on<GetCurrentAuthUserRequested>((event, emit) async {
+      emit(LoadingAuth());
+      try {
+        final response = await authRepository.getCurrentUser();
+        emit(AuthenticatedUserAuth(user: response));
+      } catch (e) {
+        emit(UnauthenticatedAuth(message: e.toString()));
       }
     });
   }

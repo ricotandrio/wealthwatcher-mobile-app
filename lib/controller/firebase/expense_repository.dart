@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wealthwatcher/models/database/expenses.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:wealthwatcher/models/database/incomes.dart';
 import 'package:wealthwatcher/models/outputs/base_output.dart';
 
 // Expenses service repository

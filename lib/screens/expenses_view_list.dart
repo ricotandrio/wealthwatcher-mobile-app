@@ -25,50 +25,53 @@ class ExpensesViewList extends StatelessWidget {
         itemCount: expenses.length,
         itemBuilder: (BuildContext context, int index) {
           final expense = expenses[index];
-          return Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return BlocProvider.value(
-                          value: getAllExpensesBloc,
-                          child: ExpenseView(
-                            expense: expense,
-                          ),
-                        );
-                      },
+          return Container(
+            padding: EdgeInsets.all(5.0),
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return BlocProvider.value(
+                            value: getAllExpensesBloc,
+                            child: ExpenseView(
+                              expense: expense,
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(
+                        color: Colors.red,
+                      ),
                     ),
-                  );
-                },
-                child: Card(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(
-                      color: Colors.red,
-                    ),
-                  ),
-                  child: ListTile(
-                    leading: Icon(Icons.category),
-                    title: Text(
-                      expense.name,
-                      style: GoogleFonts.poppins(),
-                    ),
-                    subtitle: Text(
-                      expense.amount.toString(),
-                      style: GoogleFonts.poppins(),
-                    ),
-                    trailing: Text(
-                      DateFormat.format(DateTime.parse(expense.date)),
-                      style: GoogleFonts.poppins(),
+                    child: ListTile(
+                      leading: Icon(Icons.category),
+                      title: Text(
+                        expense.name,
+                        style: GoogleFonts.poppins(),
+                      ),
+                      subtitle: Text(
+                        expense.amount.toString(),
+                        style: GoogleFonts.poppins(),
+                      ),
+                      trailing: Text(
+                        DateFormat.format(DateTime.parse(expense.date)),
+                        style: GoogleFonts.poppins(),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),

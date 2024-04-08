@@ -1,6 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
+import 'package:wealthwatcher/controller/bloc/expense/expense_event.dart';
+import 'package:wealthwatcher/controller/bloc/income/income_bloc.dart';
+import 'package:wealthwatcher/controller/bloc/income/income_event.dart';
+import 'package:wealthwatcher/controller/bloc/user/user_bloc.dart';
+import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
+import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
+import 'package:wealthwatcher/controller/firebase/income_repository.dart';
 import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/dashboard_view_screen.dart';
 import 'package:wealthwatcher/screens/settings_screen.dart';
@@ -14,27 +23,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  
+
   List<String> _menuTitles = [
     Strings.dashboard,
-    Strings.analytics,
-    Strings.balance,
-    Strings.settings
+    Strings.settings,
   ];
 
   void _onItemTapped(int index) {
+    print(index);
     setState(() {
       _selectedIndex = index;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    final auth = FirebaseAuth.instance;
-    if (auth.currentUser == null) {
-      context.go('/login');
-    }
   }
 
   @override
@@ -47,15 +46,51 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: _selectedIndex,
         children: <Widget>[
-          DashboardViewScreen(),
-          Container(
-            child: Center(
-              child: Text('Analytics Page'),
-            ),
-          ),
-          Container(
-            child: Center(
-              child: Text('Balance Page'),
+          MultiRepositoryProvider(
+            providers: [
+              RepositoryProvider(
+                create: (context) => ExpenseRepository(),
+              ),
+              RepositoryProvider(
+                create: (context) => IncomeRepository(),
+              ),
+            ],
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider<GetTotalExpensesBloc>(
+                  create: (context) => GetTotalExpensesBloc(
+                      expensesRepository:
+                          RepositoryProvider.of<ExpenseRepository>(context))
+                    ..add(GetTotalExpenses()),
+                ),
+                BlocProvider<GetTotalIncomesBloc>(
+                  create: (context) => GetTotalIncomesBloc(
+                      incomeRepository:
+                          RepositoryProvider.of<IncomeRepository>(context))
+                    ..add(GetTotalIncomes()),
+                ),
+                BlocProvider<TotalBalanceBloc>(
+                  create: (context) => TotalBalanceBloc(
+                    expenseRepository:
+                        RepositoryProvider.of<ExpenseRepository>(context),
+                    incomeRepository:
+                        RepositoryProvider.of<IncomeRepository>(context),
+                  )..add(GetTotalBalance()),
+                ),
+                BlocProvider<GetAllExpensesBloc>(
+                  create: (context) => GetAllExpensesBloc(
+                      expensesRepository:
+                          RepositoryProvider.of<ExpenseRepository>(context))
+                    ..add(GetAllExpenses()),
+                ),
+                BlocProvider<GetAllIncomesBloc>(
+                  create: (context) => GetAllIncomesBloc(
+                      incomeRepository:
+                          RepositoryProvider.of<IncomeRepository>(context))
+                    ..add(GetAllIncomes()),
+                ),
+              ],
+              child: DashboardViewScreen(),
             ),
           ),
           SettingsScreen(),
@@ -73,14 +108,6 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),
             label: Strings.dashboard,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.analytics),
-            label: Strings.analytics,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            label: Strings.balance,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

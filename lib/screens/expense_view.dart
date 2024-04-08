@@ -40,12 +40,12 @@ class ExpenseView extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<DeleteExpenseBloc>(
-          create: (context) => DeleteExpenseBloc(
-              expensesRepository: ExpenseRepository()),
+          create: (context) =>
+              DeleteExpenseBloc(expensesRepository: ExpenseRepository()),
         ),
         BlocProvider(
-          create: (context) => UpdateExpenseBloc(
-              expensesRepository: ExpenseRepository()),
+          create: (context) =>
+              UpdateExpenseBloc(expensesRepository: ExpenseRepository()),
         ),
       ],
       child: Scaffold(

@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wealthwatcher/resources/images.dart';
 import 'package:wealthwatcher/resources/strings.dart';
+import 'package:wealthwatcher/screens/login_screen.dart';
+import 'package:wealthwatcher/screens/register_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -15,8 +15,8 @@ class WelcomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(15),
+              margin: EdgeInsets.all(5),
               child: Image.asset(Images.splashImage),
             ),
             Column(
@@ -42,10 +42,14 @@ class WelcomeScreen extends StatelessWidget {
             Column(
               children: <Widget>[
                 SizedBox(
-                  width: 280,
+                  width: 240,
                   child: ElevatedButton(
                     onPressed: () {
-                      context.go('/register');
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => RegisterScreen(),
+                        ),
+                      );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,7 +59,7 @@ class WelcomeScreen extends StatelessWidget {
                           child: Text(
                             Strings.register,
                             style: GoogleFonts.poppins(
-                              fontSize: 20,
+                              fontSize: 18,
                               color: Colors.white,
                             ),
                           ),
@@ -69,7 +73,7 @@ class WelcomeScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                     ),
@@ -82,7 +86,11 @@ class WelcomeScreen extends StatelessWidget {
                     Text(Strings.haveAccountQuestion),
                     TextButton(
                       onPressed: () {
-                        context.push('/login');
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
                       },
                       child: Text(
                         Strings.login,
@@ -97,7 +105,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 10),
           ],
         ),
       ),

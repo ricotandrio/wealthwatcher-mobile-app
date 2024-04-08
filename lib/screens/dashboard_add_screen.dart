@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/income/income_bloc.dart';
+import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
+import 'package:wealthwatcher/controller/firebase/income_repository.dart';
 import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/expense_form.dart';
 import 'package:wealthwatcher/screens/income_form.dart';
@@ -17,7 +19,9 @@ class _DashboardAddScreenState extends State<DashboardAddScreen>
   @override
   Widget build(BuildContext context) {
     TabController? _tabController = TabController(length: 2, vsync: this);
-    
+    final _getAllExpenses = BlocProvider.of<GetAllExpensesBloc>(context);
+    final _getAllIncomes = BlocProvider.of<GetAllIncomesBloc>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(Strings.management),
@@ -36,16 +40,18 @@ class _DashboardAddScreenState extends State<DashboardAddScreen>
                 unselectedLabelColor: Colors.black,
                 tabs: [
                   Tab(
+                    key: UniqueKey(),
                     text: Strings.expense,
                   ),
                   Tab(
+                    key: UniqueKey(),
                     text: Strings.income,
                   ),
                 ],
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height - 110,
+              height: MediaQuery.of(context).size.height * 0.8,
               width: double.maxFinite,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,10 +61,16 @@ class _DashboardAddScreenState extends State<DashboardAddScreen>
                       controller: _tabController,
                       children: [
                         Center(
-                          child: ExpenseForm(),
+                          child: BlocProvider.value(
+                            value: _getAllExpenses,
+                            child: ExpenseForm(),
+                          ),
                         ),
                         Center(
-                          child: IncomeForm(),
+                          child: BlocProvider.value(
+                            value: _getAllIncomes,
+                            child: IncomeForm(),
+                          ),
                         ),
                       ],
                     ),

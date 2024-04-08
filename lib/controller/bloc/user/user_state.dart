@@ -104,3 +104,36 @@ class AuthenticatedTotalBalance extends TotalBalanceState {
   @override
   List<Object> get props => [totalBalance];
 }
+
+// Auth state
+abstract class AuthState extends Equatable {
+  const AuthState();
+  @override
+  List<Object> get props => [];
+}
+
+class LoadingAuth extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
+class UnauthenticatedAuth extends AuthState {
+  final String message;
+  const UnauthenticatedAuth({required this.message});
+  @override
+  List<Object> get props => [message];
+}
+
+class AuthenticatedUserAuth extends AuthState {
+  final Users user;
+  const AuthenticatedUserAuth({required this.user});
+  @override
+  List<Object> get props => [user];
+}
+
+class AuthenticatedAuth extends AuthState {
+  final String message;
+  const AuthenticatedAuth({required this.message});
+  @override
+  List<Object> get props => [message];
+}

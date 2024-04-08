@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,7 +30,12 @@ List<String> _typesList = [
 String management = Strings.expense;
 String typeCategory = 'food';
 
-class ExpenseForm extends StatelessWidget {
+class ExpenseForm extends StatefulWidget {
+  @override
+  State<ExpenseForm> createState() => _ExpenseFormState();
+}
+
+class _ExpenseFormState extends State<ExpenseForm> {
   final _formKey = GlobalKey<FormState>();
 
   final _name = TextEditingController();
@@ -41,187 +47,181 @@ class ExpenseForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AddExpenseBloc(
-            expensesRepository: ExpenseRepository(),
-          ),
-        ),
-      ],
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(height: 20),
-                    // date button
-                    ElevatedButton(
-                      onPressed: () {
-                        _selectDateTime.dateTimeModal(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5.0), // Rounded corners
+    final _getAllExpenses = BlocProvider.of<GetAllExpensesBloc>(context);
+
+    return BlocProvider(
+      create: (context) => AddExpenseBloc(
+        expensesRepository: ExpenseRepository(),
+      ),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 20),
+                      // date button
+                      ElevatedButton(
+                        onPressed: () {
+                          _selectDateTime.dateTimeModal(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(5.0), // Rounded corners
+                          ),
+                        ),
+                        child: Text(
+                          Strings.date,
+                          style: GoogleFonts.poppins(
+                              fontSize: 16, color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        Strings.date,
-                        style: GoogleFonts.poppins(
-                            fontSize: 16, color: Colors.white),
+                      SizedBox(height: 20),
+
+                      // name
+                      SizedBox(height: 20),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          labelText: Strings.name,
+                          contentPadding: EdgeInsets.all(10),
+                        ),
+                        controller: _name,
                       ),
-                    ),
-                    SizedBox(height: 20),
 
-                    // name
-                    SizedBox(height: 20),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: Strings.name),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return Strings.nameEmpty;
-                        }
-                        return null;
-                      },
-                      controller: _name,
-                    ),
+                      // amount
+                      SizedBox(height: 20),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            labelText: Strings.amount,
+                            contentPadding: EdgeInsets.all(10)),
+                        controller: _amount,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                      ),
 
-                    // amount
-                    SizedBox(height: 20),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: Strings.amount),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return Strings.amountEmpty;
-                        }
-                        return null;
-                      },
-                      controller: _amount,
-                    ),
+                      // desription
+                      SizedBox(height: 20),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            labelText: Strings.description,
+                            contentPadding: EdgeInsets.all(10)),
+                        controller: _description,
+                      ),
 
-                    // desription
-                    SizedBox(height: 20),
-                    TextFormField(
-                      decoration:
-                          InputDecoration(labelText: Strings.description),
-                      controller: _description,
-                    ),
+                      // category
+                      SizedBox(height: 30),
+                      Text(Strings.category,
+                          style: GoogleFonts.poppins(fontSize: 16)),
+                      SizedBox(height: 5),
+                      DropdownButton<String>(
+                        value: typeCategory,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            typeCategory = newValue!;
+                          });
+                        },
+                        items: _typesList
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
 
-                    // category
-                    SizedBox(height: 30),
-                    Text(Strings.category,
-                        style: GoogleFonts.poppins(fontSize: 16)),
-                    SizedBox(height: 5),
-                    StatefulBuilder(
-                      builder: (context, setState) {
-                        return DropdownButton<String>(
-                          value: typeCategory,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              typeCategory = newValue!;
-                            });
-                          },
-                          items: _typesList
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
+                      // paid method
+                      SizedBox(height: 20),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          labelText: Strings.paidMethod,
+                          contentPadding: EdgeInsets.all(10),
+                        ),
+                        controller: _paidmethod,
+                      ),
+
+                      SizedBox(height: 40),
+                      // add button
+                      BlocConsumer<AddExpenseBloc, AddExpenseState>(
+                        listener:
+                            (BuildContext context, AddExpenseState state) {
+                          if (state is AuthenticatedAddExpense) {
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(Strings.addExpenseSuccess),
+                              ),
                             );
-                          }).toList(),
-                        );
-                      },
-                    ),
 
-                    // paid method
-                    SizedBox(height: 20),
-                    TextFormField(
-                      decoration:
-                          InputDecoration(labelText: Strings.paidMethod),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return Strings.paidMethodEmpty;
-                        }
-                        return null;
-                      },
-                      controller: _paidmethod,
-                    ),
-
-                    SizedBox(height: 40),
-                    // add button
-                    BlocConsumer<AddExpenseBloc, AddExpenseState>(
-                      listener: (context, state) {
-                        if (state is AuthenticatedAddExpense) {
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(Strings.addExpenseSuccess),
-                            ),
-                          );
-
-                          BlocProvider.of<GetAllExpensesBloc>(context)
-                              .add(GetAllExpenses());
-                        } else if (state is UnauthenticatedAddExpense) {
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(Strings.addExpenseFailed),
-                            ),
-                          );
-                        } else if (state is LoadingAddExpense) {
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
+                            _getAllExpenses.add(GetAllExpenses());
+                          } else if (state is UnauthenticatedAddExpense) {
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(Strings.addExpenseFailed),
+                              ),
+                            );
+                          } else if (state is LoadingAddExpense) {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            );
+                          }
+                        },
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                BlocProvider.of<AddExpenseBloc>(context)
+                                    .add(AddExpense(
+                                  category: typeCategory,
+                                  name: _name.text,
+                                  amount: double.parse(_amount.text),
+                                  date: _selectDateTime.getDateTime(),
+                                  description: _description.text,
+                                  paidMethod: _paidmethod.text,
+                                ));
+                              }
                             },
-                          );
-                        }
-                      },
-                      builder: (context, state) {
-                        return ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              BlocProvider.of<AddExpenseBloc>(context)
-                                  .add(AddExpense(
-                                category: typeCategory,
-                                name: _name.text,
-                                amount: double.parse(_amount.text),
-                                date: _selectDateTime.getDateTime(),
-                                description: _description.text,
-                                paidMethod: _paidmethod.text,
-                              ));
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(5.0), // Rounded corners
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    5.0), // Rounded corners
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            Strings.addExpense,
-                            style: GoogleFonts.poppins(color: Colors.white),
-                          ),
-                        );
-                      },
-                    )
-                  ],
+                            child: Text(
+                              Strings.addExpense,
+                              style: GoogleFonts.poppins(color: Colors.white),
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
