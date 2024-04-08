@@ -110,7 +110,7 @@ class DefaultFirebaseOptions {
 
 Configure these rules in your Firestore.
 
-```json
+```
 service cloud.firestore {
   match /databases/{database}/documents {
     // Allow only authenticated users to read and write their own user data

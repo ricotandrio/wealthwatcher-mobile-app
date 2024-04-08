@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wealthwatcher/models/database/expenses.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:wealthwatcher/models/database/incomes.dart';
 import 'package:wealthwatcher/models/outputs/base_output.dart';
 
 // Expenses service repository
@@ -77,6 +76,8 @@ class ExpenseRepository {
       final List<Expenses> expenses = response.docs.isNotEmpty
           ? response.docs.map((e) => Expenses.fromMap(e.data())).toList()
           : [];
+
+      expenses.sort((a, b) => b.date.compareTo(a.date));
 
       return expenses;
     } on FirebaseAuthException catch (e) {
@@ -177,6 +178,38 @@ class ExpenseRepository {
       throw Exception('FirebaseException: ${e.message}');
     } catch (e) {
       throw Exception('Failed to update expenses: ${e.toString()}');
+    }
+  }
+
+  Future<double> getTotalExpenses() async {
+    try {
+      if (_firebaseAuth.currentUser == null) {
+        throw FirebaseAuthException(
+            code: _unauthErrorCode, message: _unauthErrorMessage);
+      }
+
+      final response = await _firestore
+          .collection('users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .collection('expenses')
+          .get();
+
+      final List<Expenses> expenses = response.docs.isNotEmpty
+          ? response.docs.map((e) => Expenses.fromMap(e.data())).toList()
+          : [];
+
+      double total = 0.0;
+      expenses.forEach((element) {
+        total += element.amount;
+      });
+
+      return total;
+    } on FirebaseAuthException catch (e) {
+      throw Exception('FirebaseAuthException: ${e.message}');
+    } on FirebaseException catch (e) {
+      throw Exception('FirebaseException: ${e.message}');
+    } catch (e) {
+      throw Exception('Failed to get total expenses: ${e.toString()}');
     }
   }
 }

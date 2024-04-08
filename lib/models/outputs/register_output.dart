@@ -1,4 +1,4 @@
-import 'package:wealthwatcher/models/responses/account_response.dart';
+import 'package:wealthwatcher/models/responses/user_response.dart';
 
 class RegisterUserOutput {
   final int code;

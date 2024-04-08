@@ -14,6 +14,9 @@ To run the WealthWatcher app:
 ## Documentation
 Documentation for this project available in `./docs`
 
+## Screen Capture
+<img src="./docs/images/ui.png" width="500" >
+
 ## About Flutter
 
 If this is your first time working with Flutter, here are some resources to help you get started:

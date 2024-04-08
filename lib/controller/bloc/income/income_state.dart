@@ -105,3 +105,30 @@ class AuthenticatedUpdateIncome extends UpdateIncomeState {
   @override
   List<Object> get props => [income];
 }
+
+// Get total incomes state
+class GetTotalIncomesState extends Equatable {
+  const GetTotalIncomesState();
+  @override
+  List<Object> get props => [];
+}
+
+class LoadingGetTotalIncomes extends GetTotalIncomesState {
+  @override
+  List<Object> get props => [];
+}
+
+class UnauthenticatedGetTotalIncomes extends GetTotalIncomesState {
+  final String message;
+  const UnauthenticatedGetTotalIncomes({required this.message});
+  @override
+  List<Object> get props => [message];
+}
+
+class AuthenticatedGetTotalIncomes extends GetTotalIncomesState {
+  final double totalIncomes;
+  const AuthenticatedGetTotalIncomes({required this.totalIncomes});
+  @override
+  List<Object> get props => [totalIncomes];
+}
+

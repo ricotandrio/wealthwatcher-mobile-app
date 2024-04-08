@@ -1,38 +1,77 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
+import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
+import 'package:wealthwatcher/controller/firebase/income_repository.dart';
 import 'package:wealthwatcher/controller/firebase/user_repository.dart';
 
-// Register Bloc
-class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final RegisterRepository registerRepository;
+// Total balance Bloc
+class TotalBalanceBloc extends Bloc<TotalBalanceEvent, TotalBalanceState> {
+  final ExpenseRepository expenseRepository;
+  final IncomeRepository incomeRepository;
 
-  RegisterBloc({required this.registerRepository}) : super(UnauthenticatedRegister(message: '')){
-    on<RegisterRequested>((event, emit) async {
-      emit(LoadingRegister());
+  TotalBalanceBloc(
+      {required this.expenseRepository, required this.incomeRepository})
+      : super(UnauthenticatedTotalBalance(message: '')) {
+    on<GetTotalBalance>((event, emit) async {
+      emit(LoadingTotalBalance());
       try {
-        await registerRepository.signUp(email: event.email, password: event.password);
-        
-        emit(AuthenticatedRegister(user: registerRepository.getCurrentUser()));
+        final totalExpenses = await expenseRepository.getTotalExpenses();
+        final totalIncomes = await incomeRepository.getTotalIncomes();
+        final totalBalance = totalIncomes - totalExpenses;
+        emit(AuthenticatedTotalBalance(totalBalance: totalBalance));
       } catch (e) {
-        emit(UnauthenticatedRegister(message: e.toString()));
+        emit(UnauthenticatedTotalBalance(message: e.toString()));
       }
     });
   }
 }
 
-// Login Bloc
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final LoginRepository loginRepository;
+// Auth Bloc
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final AuthRepository authRepository;
 
-  LoginBloc({required this.loginRepository}) : super(UnauthenticatedLogin(message: '')){
-    on<LoginRequested>((event, emit) async {
-      emit(LoadingLogin());
+  AuthBloc({required this.authRepository})
+      : super(UnauthenticatedAuth(message: '')) {
+    on<LoginAuthRequested>((event, emit) async {
+      emit(LoadingAuth());
       try {
-        await loginRepository.signIn(email: event.email, password: event.password);
-        emit(AuthenticatedLogin(user: loginRepository.getCurrentUser()));
+        final response = await authRepository.signIn(
+            email: event.email, password: event.password);
+        emit(AuthenticatedUserAuth(user: response));
       } catch (e) {
-        emit(UnauthenticatedLogin(message: e.toString()));
+        emit(UnauthenticatedAuth(message: e.toString()));
+      }
+    });
+
+    on<RegisterAuthRequested>((event, emit) async {
+      emit(LoadingAuth());
+      try {
+        final response = await authRepository.signUp(
+            email: event.email, password: event.password);
+        emit(AuthenticatedUserAuth(user: response));
+      } catch (e) {
+        emit(UnauthenticatedAuth(message: e.toString()));
+      }
+    });
+
+    on<LogoutAuthRequested>((event, emit) async {
+      emit(LoadingAuth());
+      try {
+        final response = await authRepository.signOut();
+        emit(AuthenticatedAuth(message: response));
+      } catch (e) {
+        emit(UnauthenticatedAuth(message: e.toString()));
+      }
+    });
+
+    on<GetCurrentAuthUserRequested>((event, emit) async {
+      emit(LoadingAuth());
+      try {
+        final response = await authRepository.getCurrentUser();
+        emit(AuthenticatedUserAuth(user: response));
+      } catch (e) {
+        emit(UnauthenticatedAuth(message: e.toString()));
       }
     });
   }
