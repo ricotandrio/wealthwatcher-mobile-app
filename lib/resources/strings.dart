@@ -139,5 +139,4 @@ class Strings {
   // not loaded
   static const String notLoaded = '*';
 
-  // 
 }

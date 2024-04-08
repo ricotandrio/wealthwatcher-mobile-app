@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
-import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
 import 'package:wealthwatcher/models/database/expenses.dart';
-import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/expense_view.dart';
 import 'package:wealthwatcher/utils/date_format.dart';
 

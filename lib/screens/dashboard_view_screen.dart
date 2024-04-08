@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_event.dart';
@@ -11,8 +10,6 @@ import 'package:wealthwatcher/controller/bloc/income/income_state.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_event.dart';
 import 'package:wealthwatcher/controller/bloc/user/user_state.dart';
-import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
-import 'package:wealthwatcher/controller/firebase/income_repository.dart';
 import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/dashboard_add_screen.dart';
 import 'package:wealthwatcher/screens/expenses_view_list.dart';

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wealthwatcher/controller/bloc/income/income_bloc.dart';
 import 'package:wealthwatcher/models/database/incomes.dart';
-import 'package:wealthwatcher/resources/strings.dart';
 import 'package:wealthwatcher/screens/income_view.dart';
 import 'package:wealthwatcher/utils/date_format.dart';
 
