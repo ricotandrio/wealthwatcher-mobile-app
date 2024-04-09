@@ -1,14 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:wealthwatcher/models/database/users.dart';
 
-// Total balance event 
-abstract class TotalBalanceEvent extends Equatable {
-  @override
-  List<Object> get props => [];
-}
-
-class GetTotalBalance extends TotalBalanceEvent {}
-
 // Auth event
 abstract class AuthEvent extends Equatable {
   @override
@@ -49,3 +41,11 @@ class GetCurrentAuthUserRequested extends AuthEvent {
   List<Object> get props => [];
 } 
 
+
+// Total balance event 
+abstract class TotalBalanceEvent extends Equatable {
+  @override
+  List<Object> get props => [];
+}
+
+class GetTotalBalance extends TotalBalanceEvent {}

@@ -40,11 +40,11 @@ class Strings {
   static const String logoutFailed = 'Failed to logout user';
 
   // expense
-  static const String expense = 'Recent Expenses';
-  static const String expenseBanner = 'Expense';
+  static const String expense = 'Expenses';
+  static const String expenseBanner = 'Recent Expense';
   static const String expenseTotal = 'Total Expenses';
 
-  static const String addExpense = 'Expense';
+  static const String addExpense = 'Add Expense';
   static const String addExpenseBanner = 'Recent Expenses';
   static const String addExpenseSuccess = 'Expense added successfully';
   static const String addExpenseFailed = 'Failed to add expense';

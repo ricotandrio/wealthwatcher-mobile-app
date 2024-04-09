@@ -24,11 +24,14 @@ String management = Strings.expense;
 String typeCategory = 'food';
 
 class IncomeForm extends StatefulWidget {
+  const IncomeForm({Key? key}) : super(key: key);
+
   @override
   State<IncomeForm> createState() => _IncomeFormState();
 }
 
-class _IncomeFormState extends State<IncomeForm> {
+class _IncomeFormState extends State<IncomeForm>
+    with AutomaticKeepAliveClientMixin {
   final _formKey = GlobalKey<FormState>();
 
   final _name = TextEditingController();
@@ -37,8 +40,24 @@ class _IncomeFormState extends State<IncomeForm> {
   final _paidmethod = TextEditingController();
   final SelectDateTime _selectDateTime = SelectDateTime();
 
+  void _resetForm() {
+    _formKey.currentState!.reset();
+    _name.clear();
+    _amount.clear();
+    _description.clear();
+    _paidmethod.clear();
+    _selectDateTime.resetDate();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
+    final _getAllIncomes = BlocProvider.of<GetAllIncomesBloc>(context);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -60,25 +79,41 @@ class _IncomeFormState extends State<IncomeForm> {
                     children: <Widget>[
                       SizedBox(height: 20),
                       // date button
-                      ElevatedButton(
-                        onPressed: () {
-                          _selectDateTime.dateTimeModal(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(5.0), // Rounded corners
+                      SizedBox(
+                        width: 120,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _selectDateTime.dateTimeModal(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.calendar_today,
+                                color: Colors.white,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                Strings.date,
+                                textAlign: TextAlign.start,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        child: Text(
-                          Strings.date,
-                          style: GoogleFonts.poppins(
-                              fontSize: 16, color: Colors.white),
-                        ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
 
                       // name
                       SizedBox(height: 20),
@@ -116,23 +151,29 @@ class _IncomeFormState extends State<IncomeForm> {
 
                       // category
                       SizedBox(height: 30),
-                      Text(Strings.category,
-                          style: GoogleFonts.poppins(fontSize: 16)),
+                      Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(Strings.category,
+                            style: GoogleFonts.poppins(fontSize: 16)),
+                      ),
                       SizedBox(height: 5),
-                      DropdownButton<String>(
-                        value: typeCategory,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            typeCategory = newValue!;
-                          });
-                        },
-                        items: _typesList
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                      Container(
+                        padding: EdgeInsets.only(left: 8),
+                        child: DropdownButton<String>(
+                          value: typeCategory,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              typeCategory = newValue!;
+                            });
+                          },
+                          items: _typesList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
                       ),
 
                       // paid method
@@ -152,14 +193,15 @@ class _IncomeFormState extends State<IncomeForm> {
                         listener: (context, state) {
                           if (state is AuthenticatedAddIncome) {
                             Navigator.pop(context);
+                            _resetForm();
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(Strings.addIncomeSuccess),
                               ),
                             );
 
-                            BlocProvider.of<GetAllIncomesBloc>(context)
-                                .add(GetAllIncomes());
+                            _getAllIncomes.add(GetAllIncomes());
                           } else if (state is UnauthenticatedAddIncome) {
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -196,7 +238,8 @@ class _IncomeFormState extends State<IncomeForm> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
-                              padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
                                     5.0), // Rounded corners

@@ -2,20 +2,18 @@
 
 1. [Introduction](#introduction)
 2. [Getting Started](#getting-started)
-3. [Configuration](#configuration)
+    - [Installation](#installation)
+    - [Setting up Firebase](#setting-up-firebase)
+    - [Configuration](#configuration)
+    - [Authentication](#authentication)
 
-# Introduction <a name="introduction"></a>
+# Introduction 
 
 Welcome to the wealthwatcher documentation. Wealthwatcher is a a mobile app for managing expenses and incomes, built using Flutter. `Firebase` is used for authentication, `Firestore` for the database, and `BLoC` for state management.
 
-# Getting Started <a name="getting-started"></a>
+# Getting Started
 
 To begin using wealthwatcher, follow these simple steps:
-
-1. [Installation](#installation)
-2. [Setting up Firebase](#setting-up-firebase)
-3. [Configuration](#configuration)
-4. [Authentication](#authentication)
 
 ## Installation
 

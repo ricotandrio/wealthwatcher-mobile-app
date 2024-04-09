@@ -1,32 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:wealthwatcher/models/database/users.dart';
 
-// Total balance state
-abstract class TotalBalanceState extends Equatable {
-  const TotalBalanceState();
-  @override
-  List<Object> get props => [];
-}
-
-class LoadingTotalBalance extends TotalBalanceState {
-  @override
-  List<Object> get props => [];
-}
-
-class UnauthenticatedTotalBalance extends TotalBalanceState {
-  final String message;
-  const UnauthenticatedTotalBalance({required this.message});
-  @override
-  List<Object> get props => [message];
-}
-
-class AuthenticatedTotalBalance extends TotalBalanceState {
-  final double totalBalance;
-  const AuthenticatedTotalBalance({required this.totalBalance});
-  @override
-  List<Object> get props => [totalBalance];
-}
-
 // Auth state
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -58,4 +32,30 @@ class AuthenticatedAuth extends AuthState {
   const AuthenticatedAuth({required this.message});
   @override
   List<Object> get props => [message];
+}
+
+// Total balance state
+abstract class TotalBalanceState extends Equatable {
+  const TotalBalanceState();
+  @override
+  List<Object> get props => [];
+}
+
+class LoadingTotalBalance extends TotalBalanceState {
+  @override
+  List<Object> get props => [];
+}
+
+class UnauthenticatedTotalBalance extends TotalBalanceState {
+  final String message;
+  const UnauthenticatedTotalBalance({required this.message});
+  @override
+  List<Object> get props => [message];
+}
+
+class AuthenticatedTotalBalance extends TotalBalanceState {
+  final double totalBalance;
+  const AuthenticatedTotalBalance({required this.totalBalance});
+  @override
+  List<Object> get props => [totalBalance];
 }

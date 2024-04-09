@@ -5,28 +5,6 @@ import 'package:wealthwatcher/controller/firebase/expense_repository.dart';
 import 'package:wealthwatcher/controller/firebase/income_repository.dart';
 import 'package:wealthwatcher/controller/firebase/user_repository.dart';
 
-// Total balance Bloc
-class TotalBalanceBloc extends Bloc<TotalBalanceEvent, TotalBalanceState> {
-  final ExpenseRepository expenseRepository;
-  final IncomeRepository incomeRepository;
-
-  TotalBalanceBloc(
-      {required this.expenseRepository, required this.incomeRepository})
-      : super(UnauthenticatedTotalBalance(message: '')) {
-    on<GetTotalBalance>((event, emit) async {
-      emit(LoadingTotalBalance());
-      try {
-        final totalExpenses = await expenseRepository.getTotalExpenses();
-        final totalIncomes = await incomeRepository.getTotalIncomes();
-        final totalBalance = totalIncomes - totalExpenses;
-        emit(AuthenticatedTotalBalance(totalBalance: totalBalance));
-      } catch (e) {
-        emit(UnauthenticatedTotalBalance(message: e.toString()));
-      }
-    });
-  }
-}
-
 // Auth Bloc
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
@@ -72,6 +50,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthenticatedUserAuth(user: response));
       } catch (e) {
         emit(UnauthenticatedAuth(message: e.toString()));
+      }
+    });
+  }
+}
+
+// Total balance Bloc
+class TotalBalanceBloc extends Bloc<TotalBalanceEvent, TotalBalanceState> {
+  final ExpenseRepository expenseRepository;
+  final IncomeRepository incomeRepository;
+
+  TotalBalanceBloc(
+      {required this.expenseRepository, required this.incomeRepository})
+      : super(UnauthenticatedTotalBalance(message: '')) {
+    on<GetTotalBalance>((event, emit) async {
+      emit(LoadingTotalBalance());
+      try {
+        final totalExpenses = await expenseRepository.getTotalExpenses();
+        final totalIncomes = await incomeRepository.getTotalIncomes();
+        final totalBalance = totalIncomes - totalExpenses;
+        emit(AuthenticatedTotalBalance(totalBalance: totalBalance));
+      } catch (e) {
+        emit(UnauthenticatedTotalBalance(message: e.toString()));
       }
     });
   }

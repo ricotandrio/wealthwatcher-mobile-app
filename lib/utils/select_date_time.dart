@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class SelectDateTime {
   final TextEditingController selectedDate = TextEditingController();
 
-  SelectDateTime();
+  SelectDateTime(){
+    selectedDate.text = DateTime.now().toIso8601String();
+  }
 
   Future<void> dateTimeModal(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -26,5 +28,9 @@ class SelectDateTime {
 
   String getDateTime() {
     return selectedDate.text.split('T')[0];
+  }
+
+  void resetDate() {
+    selectedDate.text = DateTime.now().toIso8601String();
   }
 }
