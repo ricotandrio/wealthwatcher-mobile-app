@@ -1,27 +1,70 @@
-# wealthwatcher
+# WealthWatcher
 
-1. [Introduction](#introduction)
-2. [Usage](#usage)
-3. [Setting up Firebase](#setting-up-firebase)
-4. [Firestore Configuration](#firestore-configuration)
-5. [About Flutter](#about-flutter)
+<!-- readme header  -->
+<div align="center">
+  <p align="left">
+    <br />
+    <a href="https://github.com/ricotandrio/wealthwatcher-mobile-app/blob/master/README.md"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="#">View Demo</a>
+    ·
+    <a href="https://github.com/ricotandrio/wealthwatcher-mobile-app/issues">Report Bug</a>
+  </p>
+</div>
 
-## Introduction 
+<!-- table of contents -->
+## Table of Contents
+<ol>
+  <li>
+    <a href="#about-the-project">About The Project</a>
+  </li>
+  <li>
+    <a href="#folder-tree">Folder Tree</a>
+  </li>
+  <li>
+    <a href="#getting-started">Getting Started</a>
+    <ul>
+      <li><a href="#prerequisites">Prerequisites</a></li>
+      <li><a href="#installation">Installation</a></li>
+    </ul>
+  </li>
+  <li><a href="#usage">Usage</a></li>
+  <li><a href="#roadmap">Roadmap</a></li>
+  <li><a href="#other">Other</a></li>
+</ol>
 
-This is a mobile app for managing expenses and incomes, built using Flutter. `Firebase` is used for authentication, `Firestore` for the database, and `BLoC` for state management.
+## About The Project
 
-<img src="./docs/images/ui.png" width="500" >
+Mobile app for managing expenses and incomes, built using Flutter. `Firebase` is used for authentication, `Firestore` for the database, and `BLoC` for state management.
 
-## Usage
+## Folder Tree
+```
+wealthwatcher
+├──docs
+├──assets
+├──test
+├──lib
+│  ├───controller
+│  │   ├───bloc
+│  │   │   ├───expense
+│  │   │   ├───income
+│  │   │   └───user
+│  │   └───firebase
+│  ├───models
+│  │   ├───database
+│  │   ├───outputs
+│  │   ├───requests
+│  │   └───responses
+│  ├───resources
+│  ├───screens
+│  └───utils
+└── README.md
+```
 
-1. Clone this repository to your local machine.
-2. Ensure you have Flutter installed. If not, follow the installation instructions in the [Flutter documentation](https://flutter.dev/docs/get-started/install).
-3. Navigate to the project directory in your terminal.
-4. Configure firebase 
-5. Run the command `flutter run` to launch the app on your emulator or connected device.
+## Getting Started
 
-## Setting up Firebase
-
+### Prerequisites
 To set up this mobile app, you will need Firebase options for configuring Firebase. You can use this template and store it at 'wealthwatcher/lib/firebase_options.dart'. 
 
 ***Template for firebase_options.dart***
@@ -100,9 +143,8 @@ class DefaultFirebaseOptions {
 }
 ```
 
-## Firestore Configuration
 
-Configure these rules in your Firestore.
+***Configure these rules in your Firestore.***
 
 ```
 service cloud.firestore {
@@ -123,9 +165,29 @@ service cloud.firestore {
 }
 ```
 
-## About Flutter
 
-If this is your first time working with Flutter, here are some resources to help you get started:
+### Installation
+1. Clone this repository to your local machine.
+2. Ensure you have Flutter installed. If not, follow the installation instructions in the [Flutter documentation](https://flutter.dev/docs/get-started/install).
+3. Navigate to the project directory in your terminal.
+4. Configure firebase 
+5. Run the command `flutter run` to launch the app on your emulator or connected device.
+
+
+## Usage
+<img src="./docs/images/ui.png" width="500" >
+
+## Roadmap
+- ✅ Account Management: Login, register, and logout using Firebase Auth.
+- ✅ View Total: Display total incomes, expenses, and balance.
+- ✅ View Lists: Access lists of incomes and expenses.
+- ✅ Create: Add new incomes and expenses.
+- ✅ Update: Modify existing incomes and expenses.
+- ✅ Delete: Remove incomes and expenses.
+
+## Other
+
+Flutter template resources:
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)

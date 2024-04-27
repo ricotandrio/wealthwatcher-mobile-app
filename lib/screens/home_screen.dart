@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_bloc.dart';
 import 'package:wealthwatcher/controller/bloc/expense/expense_event.dart';
 import 'package:wealthwatcher/controller/bloc/income/income_bloc.dart';
@@ -39,7 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(_menuTitles[_selectedIndex]),
+        title: Text(
+          _menuTitles[_selectedIndex],
+          style: GoogleFonts.poppins(
+              color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400),
+        ),
       ),
       body: IndexedStack(
         index: _selectedIndex,
