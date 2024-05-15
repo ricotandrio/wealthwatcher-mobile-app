@@ -93,59 +93,6 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ]),
                 SizedBox(height: 80.0),
-                // BlocConsumer<LoginBloc, LoginState>(
-                //   listener: (context, state) {
-                //     if (state is LoadingLogin) {
-                //       showDialog(
-                //         context: context,
-                //         barrierDismissible: false,
-                //         builder: (BuildContext context) {
-                //           return Center(
-                //             child: CircularProgressIndicator(),
-                //           );
-                //         },
-                //       );
-                //     } else if (state is AuthenticatedLogin) {
-                //       Navigator.of(context).pop();
-                //       context.go('/');
-                //     } else if (state is UnauthenticatedLogin) {
-                //       Navigator.of(context).pop();
-                //       ScaffoldMessenger.of(context).showSnackBar(
-                //         SnackBar(
-                //           content: Text(Strings.loginFailed),
-                //         ),
-                //       );
-                //     }
-                //   },
-                //   builder: (context, state) {
-                //     return ElevatedButton(
-                //       onPressed: () {
-                //         if (_formKey.currentState!.validate()) {
-                //           BlocProvider.of<LoginBloc>(context).add(
-                //             LoginRequested(
-                //               email: _usernameController.text,
-                //               password: _passwordController.text,
-                //             ),
-                //           );
-                //         }
-                //       },
-                //       style: ElevatedButton.styleFrom(
-                //         backgroundColor: Colors.blue,
-                //         padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
-                //         shape: RoundedRectangleBorder(
-                //           borderRadius:
-                //               BorderRadius.circular(5.0), // Rounded corners
-                //         ),
-                //       ),
-                //       child: Text(
-                //         Strings.login,
-                //         style: GoogleFonts.poppins(
-                //             color: Colors.white, fontWeight: FontWeight.w300),
-                //       ),
-                //     );
-                //   },
-                // ),
-
                 BlocConsumer<AuthBloc, AuthState>(
                   listener: (BuildContext context, AuthState state) {
                     if (state is LoadingAuth) {
